@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Analytics
+import OTPublishersSDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let configuration = SEGAnalyticsConfiguration(writeKey: "YZONHstoxBmfmazuT9SvRMfiSrv5AipQ")
+        configuration.trackApplicationLifecycleEvents = true
+        configuration.recordScreenViews = true
+        
+        SEGAnalytics.setup(with: configuration)
+        
+        SEGAnalytics.shared()?.track("test")
+        
         return true
     }
 

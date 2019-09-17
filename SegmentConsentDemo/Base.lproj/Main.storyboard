@@ -1,24 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="OpW-dv-9f1">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Consent Demo-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SegmentConsentDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ujd-hH-PBX">
+                                <rect key="frame" x="130" y="64" width="155" height="30"/>
+                                <color key="backgroundColor" red="0.27932912110000002" green="0.72119170430000001" blue="0.5048655272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Send Identify Call">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendIdentifyAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oAP-My-ik9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GDF-bd-0Ti">
+                                <rect key="frame" x="130" y="102" width="155" height="30"/>
+                                <color key="backgroundColor" red="0.27932912110000002" green="0.72119170430000001" blue="0.5048655272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="View Product">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="viewProductAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2ro-BG-9V8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARE-cO-Vr0">
+                                <rect key="frame" x="130" y="140" width="155" height="30"/>
+                                <color key="backgroundColor" red="0.27932912110000002" green="0.72119170430000001" blue="0.5048655272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Add Product">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="addProductAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cqX-g6-h6u"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="b9u-7W-Wup">
+                                <rect key="frame" x="20" y="207" width="374" height="567"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="12"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GDF-bd-0Ti" secondAttribute="trailing" constant="129" id="16m-vS-bnU"/>
+                            <constraint firstItem="Ujd-hH-PBX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="64" id="AZQ-Eq-jW1"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ujd-hH-PBX" secondAttribute="trailing" constant="129" id="Ctg-0B-awt"/>
+                            <constraint firstItem="b9u-7W-Wup" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="FpE-Vw-1sv"/>
+                            <constraint firstItem="Ujd-hH-PBX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="130" id="Ipn-tC-mf6"/>
+                            <constraint firstItem="GDF-bd-0Ti" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="130" id="LbB-JN-dGg"/>
+                            <constraint firstItem="b9u-7W-Wup" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="QJ9-da-tQG"/>
+                            <constraint firstItem="GDF-bd-0Ti" firstAttribute="top" secondItem="Ujd-hH-PBX" secondAttribute="bottom" constant="8" id="TCU-Cb-J5k"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ARE-cO-Vr0" secondAttribute="trailing" constant="129" id="TYd-Rm-yo3"/>
+                            <constraint firstItem="ARE-cO-Vr0" firstAttribute="top" secondItem="GDF-bd-0Ti" secondAttribute="bottom" constant="8" id="Uwr-Zq-QP1"/>
+                            <constraint firstItem="ARE-cO-Vr0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="130" id="b9d-81-G7G"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="b9u-7W-Wup" secondAttribute="trailing" constant="20" id="bHP-MH-eqb"/>
+                            <constraint firstItem="b9u-7W-Wup" firstAttribute="top" secondItem="ARE-cO-Vr0" secondAttribute="bottom" constant="37" id="dDK-s6-itc"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="b9u-7W-Wup" secondAttribute="trailing" constant="20" id="mHk-46-hU7"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Consent Demo" id="6AN-Of-Nlj">
+                        <barButtonItem key="rightBarButtonItem" title="Prefs" id="mKa-4b-ULs">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="showPrefsAction:" destination="BYZ-38-t0r" id="c7n-O0-u9J"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="debugTextView" destination="b9u-7W-Wup" id="x4k-GD-aq9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="47.826086956521742" y="20.758928571428569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="HEa-Lg-en4">
+            <objects>
+                <navigationController id="OpW-dv-9f1" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="B1Q-IF-ced">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.27932912111282349" green="0.72119170427322388" blue="0.50486552715301514" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="5Hn-G8-N4n"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6xc-H1-ONh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-946" y="89"/>
         </scene>
     </scenes>
 </document>

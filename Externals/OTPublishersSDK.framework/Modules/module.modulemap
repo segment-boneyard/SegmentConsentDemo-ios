@@ -1,0 +1,4 @@
+framework module OTPublishersSDK {
+  header "OTPublishersSDK-Swift.h"
+  requires objc
+}

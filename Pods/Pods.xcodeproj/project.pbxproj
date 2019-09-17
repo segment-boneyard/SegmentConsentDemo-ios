@@ -52,6 +52,7 @@
 		971B0235BF694BA74ED04913804FFFC7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A3A2B34E13D45C9B0A6F11113E9F9D0 /* Foundation.framework */; };
 		A0157EBA9D96EAA0FD4D1A17F3B6C357 /* SEGUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = C6C8BE8CCBBF387A8CD3F0FCBBBCB47C /* SEGUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A0994C16F7BB9FAA473C19F1A55EDB57 /* SEGPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B1E3CE6626412CF018B017D549B259 /* SEGPayload.m */; };
+		A3C21817233097380093AD5A /* SEGConsentManager.h in Headers */ = {isa = PBXBuildFile; fileRef = A3C21816233097380093AD5A /* SEGConsentManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A4DD3D07EE98BFCCAC2CE3EB95F5E679 /* SEGFileStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 14EBD26A56402571E1A546E4392D7C56 /* SEGFileStorage.m */; };
 		AB8EAA37AF6F798DED043F6DAE2DDB97 /* Analytics-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D54DFEC13FE35CF4FC76C7B235FD21A /* Analytics-dummy.m */; };
 		B9D6F7763F83650DB52B8DECC03B6974 /* SEGSegmentIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0FB9F3BD8D5254D836C96A48664FE5 /* SEGSegmentIntegration.m */; };
@@ -95,11 +96,11 @@
 		1A9B065C4B184081B3E257C5CE2F9EBC /* SEGTrackPayload.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SEGTrackPayload.m; sourceTree = "<group>"; };
 		21F6F4F0CCE2B7DE1A124ADE420013F9 /* SEGAnalyticsUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGAnalyticsUtils.h; sourceTree = "<group>"; };
 		23FE014EBBD44836907B60B23ABCBF71 /* SEGUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SEGUtils.m; sourceTree = "<group>"; };
-		25760065B69D26BAE96374AB9832625F /* Pods_SegmentConsentDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_SegmentConsentDemo.framework; path = "Pods-SegmentConsentDemo.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		25760065B69D26BAE96374AB9832625F /* Pods_SegmentConsentDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SegmentConsentDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25AA4F19E245C47B4231FF70756EA542 /* SEGStorage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGStorage.h; sourceTree = "<group>"; };
-		26DA3A630A6269E5463963B4CC0883B3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		26DA3A630A6269E5463963B4CC0883B3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		27B013911A1A1F5DE55A1B51E92C796F /* SEGIdentifyPayload.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGIdentifyPayload.h; sourceTree = "<group>"; };
-		2CE4B6165F426953A26419DF02AF0D93 /* Analytics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Analytics.framework; path = Analytics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CE4B6165F426953A26419DF02AF0D93 /* Analytics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Analytics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DBD992D9AA55E0E5B4454AC7743A13E /* UIViewController+SEGScreen.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SEGScreen.h"; sourceTree = "<group>"; };
 		318F6AA3D2C4DA644A5A7EC992B1E35F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		3A09AE4336760C6682A3F6A35DD60951 /* Pods-SegmentConsentDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SegmentConsentDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -128,14 +129,15 @@
 		9B7DA54834B8B618429430D7E454820F /* SEGUserDefaultsStorage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGUserDefaultsStorage.h; sourceTree = "<group>"; };
 		9C0FB9F3BD8D5254D836C96A48664FE5 /* SEGSegmentIntegration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SEGSegmentIntegration.m; sourceTree = "<group>"; };
 		9D54DFEC13FE35CF4FC76C7B235FD21A /* Analytics-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Analytics-dummy.m"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9FE43B73681467757730E5C535491481 /* Analytics-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Analytics-Info.plist"; sourceTree = "<group>"; };
 		A2A1335072896D53CA5589EF73CBFF8D /* SEGScreenPayload.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGScreenPayload.h; sourceTree = "<group>"; };
 		A2C5E71B8518782018649D060A535745 /* SEGHTTPClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SEGHTTPClient.m; sourceTree = "<group>"; };
+		A3C21816233097380093AD5A /* SEGConsentManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SEGConsentManager.h; path = "../../../../Externals/analytics-ios/Analytics/Classes/SEGConsentManager.h"; sourceTree = "<group>"; };
 		A42478CD828A38B38536AD136A35A507 /* Analytics.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Analytics.xcconfig; sourceTree = "<group>"; };
 		A6AE73EF6445B8CECC3D93CE67E8BD91 /* SEGSegmentIntegration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGSegmentIntegration.h; sourceTree = "<group>"; };
 		A8AC2EC19F342E197677127AFF0B95AA /* SEGAnalyticsConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SEGAnalyticsConfiguration.m; sourceTree = "<group>"; };
-		A9BFD9609DAFF389A823B7424D632C85 /* Analytics.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = Analytics.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A9BFD9609DAFF389A823B7424D632C85 /* Analytics.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = Analytics.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B006964EC56E2DA91044192BCF8C8F96 /* Pods-SegmentConsentDemo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SegmentConsentDemo-dummy.m"; sourceTree = "<group>"; };
 		B413A3DFF8B99308A0E489A7E97DD279 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		C6342CB409A6E0C6E945B8C8F5869D82 /* SEGAnalytics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGAnalytics.h; sourceTree = "<group>"; };
@@ -150,7 +152,7 @@
 		DAFA6E6BC80F9F72BBD2AB1DE127B43E /* SEGIntegrationFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGIntegrationFactory.h; sourceTree = "<group>"; };
 		DAFFFE825FF667DB37034FC494182F74 /* Pods-SegmentConsentDemo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SegmentConsentDemo-acknowledgements.plist"; sourceTree = "<group>"; };
 		DB8AA1AB1E2074F456EE819B7BC830C5 /* Pods-SegmentConsentDemo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SegmentConsentDemo-umbrella.h"; sourceTree = "<group>"; };
-		DBCA1A451975CB258ACD54B67A5510CB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		DBCA1A451975CB258ACD54B67A5510CB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DC8D90ACCDBF94BAC5DC42A628C1C782 /* SEGReachability.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGReachability.h; sourceTree = "<group>"; };
 		E5B4D72D92A98F04BB69A1F110643A67 /* SEGAnalyticsConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SEGAnalyticsConfiguration.h; sourceTree = "<group>"; };
 		E8F70A5E6DD71BA1C4383A570C481319 /* SEGSegmentIntegrationFactory.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SEGSegmentIntegrationFactory.m; sourceTree = "<group>"; };
@@ -207,7 +209,6 @@
 				C7D92D84DD4170A510EFFE6D93E29D66 /* SEGTrackPayload.h */,
 				1A9B065C4B184081B3E257C5CE2F9EBC /* SEGTrackPayload.m */,
 			);
-			name = Integrations;
 			path = Integrations;
 			sourceTree = "<group>";
 		};
@@ -280,7 +281,6 @@
 				2DBD992D9AA55E0E5B4454AC7743A13E /* UIViewController+SEGScreen.h */,
 				01A78A510C38472ECE31F55D087571F5 /* UIViewController+SEGScreen.m */,
 			);
-			name = Internal;
 			path = Internal;
 			sourceTree = "<group>";
 		};
@@ -338,7 +338,6 @@
 				D3582B915D4403EF2A434600517BD5B3 /* SEGAES256Crypto.m */,
 				01818A7422E2A4DE7BE44E232FC0012F /* SEGCrypto.h */,
 			);
-			name = Crypto;
 			path = Crypto;
 			sourceTree = "<group>";
 		};
@@ -350,6 +349,7 @@
 				E5B4D72D92A98F04BB69A1F110643A67 /* SEGAnalyticsConfiguration.h */,
 				A8AC2EC19F342E197677127AFF0B95AA /* SEGAnalyticsConfiguration.m */,
 				5B0870DDACEE1A96D1B76D3A3D32C621 /* SEGSerializableValue.h */,
+				A3C21816233097380093AD5A /* SEGConsentManager.h */,
 				921EF903319A3A9851D69CDB73A559D0 /* Crypto */,
 				1AC528259E27D1662D1CB68DB899B696 /* Integrations */,
 				4264863872841DD47B6BB56BCF3A5CC8 /* Internal */,
@@ -396,7 +396,6 @@
 				C78FA7DCF22BFE1C6337E7DBD401494C /* SEGMiddleware.h */,
 				5A20FAB1914E03374E5C91DF38F60AFE /* SEGMiddleware.m */,
 			);
-			name = Middlewares;
 			path = Middlewares;
 			sourceTree = "<group>";
 		};
@@ -430,6 +429,7 @@
 				E2BEFC50DDD7616F9BD97C00719F51CF /* SEGIdentifyPayload.h in Headers */,
 				EA61FD333BA8E1BD9E5048C9B9B426D1 /* SEGIntegration.h in Headers */,
 				8EE042FE8F9A91C450A501BFCE8A6B61 /* SEGIntegrationFactory.h in Headers */,
+				A3C21817233097380093AD5A /* SEGConsentManager.h in Headers */,
 				9295EBF13D1FC1732D175883139E0140 /* SEGIntegrationsManager.h in Headers */,
 				E567AA150DB6C2F92C3D53445646D93A /* SEGMiddleware.h in Headers */,
 				29400B00AF427A84DBABA47CF67423B2 /* SEGPayload.h in Headers */,

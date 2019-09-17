@@ -14,15 +14,16 @@ import OTPublishersSDK
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var consentManager = ConsentManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let configuration = SEGAnalyticsConfiguration(writeKey: "YZONHstoxBmfmazuT9SvRMfiSrv5AipQ")
         configuration.trackApplicationLifecycleEvents = true
         configuration.recordScreenViews = true
+        configuration.consentManager = consentManager
+        configuration.middlewares = [ConsentMiddleware()]
         
         SEGAnalytics.setup(with: configuration)
-        
         SEGAnalytics.shared()?.track("test")
         
         return true

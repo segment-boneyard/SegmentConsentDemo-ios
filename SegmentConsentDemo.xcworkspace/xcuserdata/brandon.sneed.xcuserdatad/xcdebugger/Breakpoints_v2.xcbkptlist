@@ -10,29 +10,61 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SegmentConsentDemo/ConsentManager.swift"
-            timestampString = "590381843.7473871"
+            timestampString = "590399502.273388"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "hasConsent(_:)"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "context(_:next:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SegmentConsentDemo/ConsentManager.swift"
-            timestampString = "590381843.747744"
+            timestampString = "590399502.274017"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "showConsentView()"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "modifyContext(context:integrations:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SegmentConsentDemo.ConsentMiddleware.modifyContext(context: __C.SEGContext, integrations: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; __C.SEGContext"
+                  moduleName = "SegmentConsentDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/brandon.sneed/work/SegmentConsentDemo/SegmentConsentDemo/ConsentManager.swift"
+                  timestampString = "590399330.913431"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "119"
+                  endingLineNumber = "119"
+                  offsetFromSymbolStart = "98">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.SEGMutableContext) -&gt; () in SegmentConsentDemo.ConsentMiddleware.modifyContext(context: __C.SEGContext, integrations: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; __C.SEGContext"
+                  moduleName = "SegmentConsentDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/brandon.sneed/work/SegmentConsentDemo/SegmentConsentDemo/ConsentManager.swift"
+                  timestampString = "590399330.915213"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "188">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -18,6 +18,7 @@ class ViewController: UIViewController {
         
         self.debugTextView.text = lastConsent
         
+        // the OT SDK doesn't call it's completion handler. :(
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
             let newConsent = ConsentManager.shared.whatsConsented()
             if self.lastConsent != newConsent {

@@ -1,0 +1,6 @@
+framework module Segment_Optimizely_X {
+  umbrella header "Segment-Optimizely-X-umbrella.h"
+
+  export *
+  module * { export * }
+}

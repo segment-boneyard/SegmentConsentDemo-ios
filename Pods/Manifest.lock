@@ -1,8 +1,35 @@
 PODS:
   - Analytics (3.8.0-beta.0)
+  - OptimizelySDKCore (3.1.3)
+  - OptimizelySDKDatafileManager (3.1.3):
+    - OptimizelySDKShared (= 3.1.3)
+  - OptimizelySDKEventDispatcher (3.1.3):
+    - OptimizelySDKShared (= 3.1.3)
+  - OptimizelySDKiOS (3.1.3):
+    - OptimizelySDKDatafileManager (= 3.1.3)
+    - OptimizelySDKEventDispatcher (= 3.1.3)
+    - OptimizelySDKUserProfileService (= 3.1.3)
+  - OptimizelySDKShared (3.1.3):
+    - OptimizelySDKCore (= 3.1.3)
+  - OptimizelySDKUserProfileService (3.1.3):
+    - OptimizelySDKShared (= 3.1.3)
+  - Segment-Optimizely-X (1.0.3-beta):
+    - Analytics (~> 3.0)
+    - OptimizelySDKiOS
 
 DEPENDENCIES:
   - Analytics (from `./externals/analytics-ios`)
+  - Segment-Optimizely-X (= 1.0.3-beta)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - OptimizelySDKCore
+    - OptimizelySDKDatafileManager
+    - OptimizelySDKEventDispatcher
+    - OptimizelySDKiOS
+    - OptimizelySDKShared
+    - OptimizelySDKUserProfileService
+    - Segment-Optimizely-X
 
 EXTERNAL SOURCES:
   Analytics:
@@ -10,7 +37,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Analytics: ee0475956b5c3689e2c7f15de501f87d0f8b12a1
+  OptimizelySDKCore: 3f6018cc222b23de13ae9a71c2c15cd7fa397aed
+  OptimizelySDKDatafileManager: 34edeb189ef170992677149460172ef44bfa7250
+  OptimizelySDKEventDispatcher: 081f55ea7cea340c8785c360734a132e889ed257
+  OptimizelySDKiOS: b40202fc2aa6bc49ccc36edd9e3c04aae113683d
+  OptimizelySDKShared: e92e0d7ae787097bc146899ea24415b82e0a3e64
+  OptimizelySDKUserProfileService: 5f4bd743a15dc10ba53eddf41b87321a60cbda00
+  Segment-Optimizely-X: c5f3cd13a50af2b138c320cf9c68e656432f4789
 
-PODFILE CHECKSUM: f09004aa289ab0b2a159b09d91757f4a70c126cb
+PODFILE CHECKSUM: f7d8d128842f80ca9b8a13397ecde14005d24d39
 
 COCOAPODS: 1.7.2

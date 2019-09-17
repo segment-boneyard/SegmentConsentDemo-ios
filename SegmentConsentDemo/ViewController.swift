@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         
         self.debugTextView.text = lastConsent
         
-        // the OT SDK doesn't call it's completion handler. :(
+        // the OT SDK doesn't call it's completion handler if alwaysLoadBanner is enabled :(
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
             let newConsent = ConsentManager.shared.whatsConsented()
             if self.lastConsent != newConsent {
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     }
     
     func screenLog(_ msg: String) {
-        debugTextView.text = "[00:00:00]" + msg + "\n" + (debugTextView.text ?? "")
+        debugTextView.text = msg + "\n" + (debugTextView.text ?? "")
     }
 
     @IBAction func showPrefsAction(_ sender: Any) {

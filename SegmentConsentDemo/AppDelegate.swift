@@ -9,20 +9,33 @@
 import UIKit
 import Analytics
 import OTPublishersSDK
+import Segment_Optimizely_X
+import OptimizelySDKiOS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var consentManager = ConsentManager()
+    var optlyManager: OptimizelySDKiOS.OPTLYManager?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // configure segment
         let configuration = SEGAnalyticsConfiguration(writeKey: "YZONHstoxBmfmazuT9SvRMfiSrv5AipQ")
         configuration.trackApplicationLifecycleEvents = true
         configuration.recordScreenViews = true
-        configuration.consentManager = consentManager
         configuration.middlewares = [ConsentMiddleware()]
         
+        // setup optimizely
+        let optlyLogger = OPTLYLoggerDefault(logLevel: .error)
+        let builder = OPTLYManagerBuilder.init { (builder) in
+            builder?.projectId = "8135581546"
+            builder?.logger = optlyLogger
+        }
+        optlyManager = OptimizelySDKiOS.OPTLYManager(builder: builder)
+        _ = optlyManager?.initialize()
+        configuration.use(SEGOptimizelyXIntegrationFactory.instance(withOptimizely: optlyManager))
+
         SEGAnalytics.setup(with: configuration)
         SEGAnalytics.shared()?.track("test")
         

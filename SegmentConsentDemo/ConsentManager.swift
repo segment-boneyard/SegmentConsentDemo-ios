@@ -73,7 +73,7 @@ public class ConsentMiddleware: NSObject, SEGMiddleware {
     override init() {
         super.init()
         
-        // the OT SDK doesn't call it's completion handler. :(
+        // the OT SDK doesn't call it's completion handler if alwaysLoadBanner is enabled :(
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
             let newConsent = ConsentManager.shared.whatsConsented()
             if self.lastConsent != newConsent {
@@ -184,7 +184,7 @@ public class ConsentMiddleware: NSObject, SEGMiddleware {
     }
 }
 
-public class ConsentManager: NSObject, SEGConsentManager {    
+public class ConsentManager: NSObject {    
     static let shared = ConsentManager()
     
     let oneTrust = OTPublishersSDK.shared
@@ -239,7 +239,6 @@ public class ConsentManager: NSObject, SEGConsentManager {
     }
     
     func showConsentView() {
-        //oneTrust.loadOneTrustConsentView(with: "https://cdn.cookielaw.org/consent/426524c5-55e1-4607-80f1-5831f2756d42.js", alwaysLoadBanner: true)
         oneTrust.loadOneTrustConsentView(with: "https://cdn.cookielaw.org/consent/426524c5-55e1-4607-80f1-5831f2756d42.js", alwaysLoadBanner: true) { (status, error) in
             print("done")
         }

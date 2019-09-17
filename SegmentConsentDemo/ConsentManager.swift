@@ -184,13 +184,15 @@ public class ConsentMiddleware: NSObject, SEGMiddleware {
     }
 }
 
-public class ConsentManager: NSObject {    
+public class ConsentManager: NSObject, SEGConsentManager {    
     static let shared = ConsentManager()
     
     let oneTrust = OTPublishersSDK.shared
     
     override init() {
         super.init()
+        // demo hack to get direct destinations working
+        __integrationConsentManager = self
     }
     
     public func allConsentObtained() -> Bool {

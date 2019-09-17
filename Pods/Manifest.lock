@@ -1,16 +1,16 @@
 PODS:
-  - Analytics (3.7.0)
+  - Analytics (3.8.0-beta.0)
 
 DEPENDENCIES:
-  - Analytics (~> 3.0)
+  - Analytics (from `./externals/analytics-ios`)
 
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - Analytics
+EXTERNAL SOURCES:
+  Analytics:
+    :path: "./externals/analytics-ios"
 
 SPEC CHECKSUMS:
-  Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
+  Analytics: ee0475956b5c3689e2c7f15de501f87d0f8b12a1
 
-PODFILE CHECKSUM: 72f46e227b821b1ee7a1a3243e08afbab094a8a5
+PODFILE CHECKSUM: f09004aa289ab0b2a159b09d91757f4a70c126cb
 
 COCOAPODS: 1.7.2

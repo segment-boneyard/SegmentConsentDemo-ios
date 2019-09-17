@@ -6,5 +6,6 @@ target 'SegmentConsentDemo' do
   use_frameworks!
 
   # Pods for SegmentConsentDemo
-  pod 'Analytics', '~> 3.0'
+  pod 'Analytics', :path => './externals/analytics-ios'
+  
 end

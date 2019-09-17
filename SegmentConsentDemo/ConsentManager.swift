@@ -184,7 +184,7 @@ public class ConsentMiddleware: NSObject, SEGMiddleware {
     }
 }
 
-public class ConsentManager: NSObject, SEGConsentManager {    
+public class ConsentManager: NSObject, SEGConsentManager {
     static let shared = ConsentManager()
     
     let oneTrust = OTPublishersSDK.shared
@@ -222,7 +222,7 @@ public class ConsentManager: NSObject, SEGConsentManager {
                 }
             }
         }
-        
+        result["All"] = false
         result.removeValue(forKey: "Segment.io")
         return result
     }

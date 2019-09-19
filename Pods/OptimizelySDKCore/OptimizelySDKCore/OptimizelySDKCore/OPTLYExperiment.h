@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016,2018-2019, Optimizely, Inc. and contributors              *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -16,13 +16,12 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
-#import "OPTLYCondition.h"
 
-@class OPTLYVariation, OPTLYTrafficAllocation, OPTLYVariation;
+@class OPTLYVariation;
 @protocol OPTLYTrafficAllocation, OPTLYVariation;
 
 /**
@@ -36,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString * const OPTLYExperimentStatusRunning;
 NS_ASSUME_NONNULL_END
 
-@interface OPTLYExperiment : OPTLYJSONModel <OPTLYCondition>
+@interface OPTLYExperiment : JSONModel
 
 /// The experiment's ID.
 @property (nonatomic, strong, nonnull) NSString *experimentId;
@@ -45,17 +44,15 @@ NS_ASSUME_NONNULL_END
 /// The experiment's status.
 @property (nonatomic, strong, nonnull) NSString *status;
 /// The group ID the experiment belongs to.
-@property (nonatomic, strong, nullable) NSString<OPTLYIgnore> *groupId;
+@property (nonatomic, strong, nullable) NSString<Ignore> *groupId;
 /// The experiment's traffic allocations.
-@property (nonatomic, strong, nonnull) NSArray<OPTLYTrafficAllocation *><OPTLYTrafficAllocation> *trafficAllocations;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYTrafficAllocation> *trafficAllocations;
 /// An array of audience Ids for the experiment
 @property (nonatomic, strong, nonnull) NSArray<NSString *> *audienceIds;
 /// An array of variation Ids for the experiment
-@property (nonatomic, strong, nonnull) NSArray<OPTLYVariation *><OPTLYVariation> *variations;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYVariation> *variations;
 /// A dictionary indicating the forced and control variation
 @property (nonatomic, strong, nonnull) NSDictionary<NSString *, NSString *> *forcedVariations;
-/// Audience evaluator conditions
-@property (nonatomic, strong, nullable) NSArray<OPTLYCondition *><OPTLYCondition, OPTLYOptional> *audienceConditions;
 /// Personalization layer id
 @property (nonatomic, strong, nonnull) NSString *layerId;
 
@@ -66,9 +63,5 @@ NS_ASSUME_NONNULL_END
 
 /// Determines if the experiment is running
 - (BOOL)isExperimentRunning;
-/// Override OPTLYJSONModel set conditions
-- (void)setAudienceConditionsWithNSString:(nullable NSString *)string;
-/// Returns audience conditions string
-- (nonnull NSString *)getAudienceConditionsString;
 
 @end

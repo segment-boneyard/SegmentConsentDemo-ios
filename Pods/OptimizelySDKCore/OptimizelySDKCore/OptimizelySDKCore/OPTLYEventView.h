@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016,2018, Optimizely, Inc. and contributors                        *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -16,26 +16,25 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 
 // Model object for a view.
 
 @protocol OPTLYEventFeature;
-@class OPTLYEventFeature;
 
 @protocol OPTLYEventView
 @end
 
-@interface OPTLYEventView : OPTLYJSONModel
+@interface OPTLYEventView : JSONModel
 
 // The ID of the view containing this impression.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *viewId;
+@property (nonatomic, strong, nullable) NSString<Optional> *viewId;
 // The timestamp when the containing view was activated.
-@property (nonatomic, strong, nullable) NSNumber<OPTLYOptional> *activatedTimestamp;
+@property (nonatomic, strong, nullable) NSNumber<Optional> *activatedTimestamp;
 // Features attached to the view.
-@property (nonatomic, strong, nullable) NSArray<OPTLYEventFeature *><OPTLYEventFeature, OPTLYOptional> *viewFeatures;
+@property (nonatomic, strong, nullable) NSArray<OPTLYEventFeature, Optional> *viewFeatures;
 
 @end

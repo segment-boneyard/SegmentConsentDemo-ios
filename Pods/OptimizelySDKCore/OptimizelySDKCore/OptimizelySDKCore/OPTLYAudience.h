@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016,2018-2019, Optimizely, Inc. and contributors              *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -16,30 +16,25 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 #import "OPTLYCondition.h"
 
 @protocol OPTLYAudience
 @end
 
-@interface OPTLYAudience : OPTLYJSONModel <OPTLYCondition>
+@interface OPTLYAudience : JSONModel <OPTLYCondition>
 
 /// The audience id
 @property (nonatomic, strong) NSString *audienceId;
 /// The audience name
 @property (nonatomic, strong) NSString *audienceName;
 /// Audience evaluator conditionals
-@property (nonatomic, strong) NSArray<OPTLYCondition *><OPTLYCondition> *conditions;
+@property (nonatomic, strong) NSArray<OPTLYCondition> *conditions;
 
-/// Override OPTLYJSONModel set conditions
+/// Override JSONModel set conditions
 - (void)setConditionsWithNSString:(NSString *)string;
-- (void)setConditionsWithNSArray:(NSArray *)array;
-- (void)setConditionsWithNSDictionary:(NSDictionary *)dictionary;
-
-/// Returns conditions string
-- (NSString *)getConditionsString;
 
 @end

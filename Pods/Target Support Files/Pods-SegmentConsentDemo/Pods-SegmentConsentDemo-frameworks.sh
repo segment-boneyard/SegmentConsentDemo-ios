@@ -162,21 +162,25 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Analytics/Analytics.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKCore/OptimizelySDKCore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKDatafileManager/OptimizelySDKDatafileManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKEventDispatcher/OptimizelySDKEventDispatcher.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKShared/OptimizelySDKShared.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKUserProfileService/OptimizelySDKUserProfileService.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKUserProfile/OptimizelySDKUserProfile.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKiOS/OptimizelySDKiOS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Segment-Optimizely-X/Segment_Optimizely_X.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Analytics/Analytics.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKCore/OptimizelySDKCore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKDatafileManager/OptimizelySDKDatafileManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKEventDispatcher/OptimizelySDKEventDispatcher.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKShared/OptimizelySDKShared.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKUserProfileService/OptimizelySDKUserProfileService.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKUserProfile/OptimizelySDKUserProfile.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/OptimizelySDKiOS/OptimizelySDKiOS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Segment-Optimizely-X/Segment_Optimizely_X.framework"
 fi

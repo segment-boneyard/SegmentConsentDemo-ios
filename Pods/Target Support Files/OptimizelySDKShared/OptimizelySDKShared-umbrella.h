@@ -15,7 +15,6 @@
 #import "OPTLYClientBuilder.h"
 #import "OPTLYDatabase.h"
 #import "OPTLYDatabaseEntity.h"
-#import "OPTLYDatafileConfig.h"
 #import "OPTLYDatafileManagerBasic.h"
 #import "OPTLYDataStore.h"
 #import "OPTLYEventDataStore.h"
@@ -23,10 +22,6 @@
 #import "OPTLYManagerBase.h"
 #import "OPTLYManagerBasic.h"
 #import "OPTLYManagerBuilder.h"
-#import "OPTLYFMDB.h"
-#import "OPTLYFMDBDatabase.h"
-#import "OPTLYFMDBDatabaseQueue.h"
-#import "OPTLYFMDBResultSet.h"
 
 FOUNDATION_EXPORT double OptimizelySDKSharedVersionNumber;
 FOUNDATION_EXPORT const unsigned char OptimizelySDKSharedVersionString[];

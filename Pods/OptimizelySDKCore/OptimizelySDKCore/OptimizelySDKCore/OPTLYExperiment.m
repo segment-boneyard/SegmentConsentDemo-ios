@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016,2018-2019, Optimizely, Inc. and contributors              *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -17,58 +17,26 @@
 #import "OPTLYExperiment.h"
 #import "OPTLYDatafileKeys.h"
 #import "OPTLYVariation.h"
-#import "OPTLYNSObject+Validation.h"
 
 NSString * const OPTLYExperimentStatusRunning = @"Running";
 
 @interface OPTLYExperiment()
 /// A mapping of an experiment's variation's ID to the matching variation.
 /// @{NSString *variationId : OPTLYVariation *variation}
-@property (nonatomic, strong) NSDictionary<OPTLYIgnore> *variationIdToVariationMap;
+@property (nonatomic, strong) NSDictionary<Ignore> *variationIdToVariationMap;
 /// A mapping of an experiment's variation's Key to the matching variation.
 /// @{NSString *variationKey : OPTLYVariation *variation}
-@property (nonatomic, strong) NSDictionary<OPTLYIgnore> *variationKeyToVariationMap;
-/// A JSON String containing the expirement's audience conditions
-@property (nonatomic, strong) NSString<OPTLYIgnore> *conditionsString;
+@property (nonatomic, strong) NSDictionary<Ignore> *variationKeyToVariationMap;
 @end
 
 @implementation OPTLYExperiment
 
-+ (OPTLYJSONKeyMapper*)keyMapper
++ (JSONKeyMapper*)keyMapper
 {
-    return [[OPTLYJSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysExperimentId   : @"experimentId",
-                                                             OPTLYDatafileKeysExperimentKey  : @"experimentKey",
-                                                             OPTLYDatafileKeysExperimentTrafficAllocation : @"trafficAllocations"
-                                                             }];
-}
-
-- (nonnull NSString *)getAudienceConditionsString {
-    return _conditionsString ?: @"";
-}
-
-- (void)setAudienceConditionsWithNSString:(nullable NSString *)string {
-    _conditionsString = string ?: @"";
-    NSArray *array = [string getValidAudienceConditionsArray];
-    [self setAudienceConditionsWithNSArray:array];
-}
-
-- (void)setAudienceConditionsWithNSArray:(NSArray *)array {
-    NSError *err = nil;
-    self.audienceConditions = [OPTLYCondition deserializeAudienceConditionsJSONArray:array error:&err];
-    
-    if (err != nil) {
-        NSException *exception = [[NSException alloc] initWithName:err.domain reason:err.localizedFailureReason userInfo:@{@"Error" : err}];
-        @throw exception;
-    }
-}
-
-- (nullable NSNumber *)evaluateConditionsWithAttributes:(nullable NSDictionary<NSString *, id> *)attributes projectConfig:(nullable OPTLYProjectConfig *)config {
-
-    NSObject<OPTLYCondition> *condition = (NSObject<OPTLYCondition> *)[self.audienceConditions firstObject];
-    if (condition) {
-        return [condition evaluateConditionsWithAttributes:attributes projectConfig:config];
-    }
-    return nil;
+    return [[JSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysExperimentId   : @"experimentId",
+                                                        OPTLYDatafileKeysExperimentKey  : @"experimentKey",
+                                                        OPTLYDatafileKeysExperimentTrafficAllocation : @"trafficAllocations"
+                                                        }];
 }
 
 - (void)setGroupId:(NSString *)groupId {

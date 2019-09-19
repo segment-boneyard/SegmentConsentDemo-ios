@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -19,7 +19,6 @@
 #ifdef UNIVERSAL
     #import "OptimizelySDKShared.h"
     #import "OptimizelySDKCore.h"
-    #import "OPTLYEventDataStore.h"
 #else
     #import <OptimizelySDKShared/OptimizelySDKShared.h>
     #import <OptimizelySDKCore/OptimizelySDKCore.h>
@@ -67,16 +66,7 @@ typedef void (^OPTLYEventDispatcherResponse)(NSData * _Nullable data, NSURLRespo
  * @param builderBlock The builder block with which to initialize the Optimizely Event Dispatcher object
  * @return An instance of OPTLYEventDispatcher
  */
-+ (nullable instancetype)init:(nonnull OPTLYEventDispatcherBuilderBlock)builderBlock
-__attribute((deprecated("Use OPTLYEventDispatcherDefault initWithBuilder method instead.")));
-
-/**
- * Initializer for Optimizely Event Dispatcher object
- *
- * @param builder The OPTLYEventDispatcherBuilder object with which to initialize the Optimizely Event Dispatcher object
- * @return An instance of OPTLYEventDispatcher
- */
-- (nullable instancetype)initWithBuilder:(nullable OPTLYEventDispatcherBuilder *)builder;
++ (nullable instancetype)init:(nonnull OPTLYEventDispatcherBuilderBlock)builderBlock;
 
 /**
  * Dispatch an impression event.
@@ -98,6 +88,6 @@ __attribute((deprecated("Use OPTLYEventDispatcherDefault initWithBuilder method 
 /**
  * Flush all events in queue (cached and saved).
  */
-- (void)flushEvents;
+-(void)flushEvents;
 
 @end

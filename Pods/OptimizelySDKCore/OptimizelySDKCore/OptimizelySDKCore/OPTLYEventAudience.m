@@ -15,13 +15,13 @@
  ***************************************************************************/
 
 #import "OPTLYEventAudience.h"
-#import "OPTLYDatafileKeys.h"
+#import "OPTLYEventParameterKeys.h"
 
 @implementation OPTLYEventAudience
 
-+ (OPTLYJSONKeyMapper*)keyMapper
++ (JSONKeyMapper*)keyMapper
 {
-    return [[OPTLYJSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysAudienceId : @"audienceId" }];
+    return [[JSONKeyMapper alloc] initWithDictionary:@{ OPTLYEventParameterKeysAudienceId : @"audienceId" }];
 }
 
 @end

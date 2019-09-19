@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016,2018-2019, Optimizely, Inc. and contributors              *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -14,76 +14,42 @@
  * limitations under the License.                                           *
  ***************************************************************************/
 
-
 #import "OPTLYAudience.h"
 #import "OPTLYDatafileKeys.h"
-#import "OPTLYNSObject+Validation.h"
-#import "OPTLYLoggerMessages.h"
-#import "OPTLYLogger.h"
-
-@interface OPTLYAudience()
-/// String representation of the conditions
-@property (nonatomic, strong) NSString<OPTLYIgnore> *conditionsString;
-@end
 
 @implementation OPTLYAudience
 
-+ (OPTLYJSONKeyMapper*)keyMapper
++ (JSONKeyMapper*)keyMapper
 {
-    return [[OPTLYJSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysAudienceId   : @"audienceId",
-                                                             OPTLYDatafileKeysAudienceName : @"audienceName"
+    return [[JSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysAudienceId   : @"audienceId",
+                                                        OPTLYDatafileKeysAudienceName : @"audienceName"
                                                         }];
 }
 
-- (NSString *)getConditionsString {
-    return _conditionsString ?: @"";
-}
-
 - (void)setConditionsWithNSString:(NSString *)string {
-    NSArray *array = [string getValidConditionsArray];
-    [self setConditionsWithNSArray:array];
-}
-
-- (void)setConditionsWithNSArray:(NSArray *)array {
-    //Retrieving Jsonstring from array
-    _conditionsString = [array getJSONArrayStringOrEmpty];
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    
     NSError *err = nil;
-    self.conditions = [OPTLYCondition deserializeJSON:array error:nil];
+    NSArray *array = [NSJSONSerialization JSONObjectWithData:data
+                                                     options:NSJSONReadingAllowFragments
+                                                       error:&err];
     if (err != nil) {
         NSException *exception = [[NSException alloc] initWithName:err.domain reason:err.localizedFailureReason userInfo:@{@"Error" : err}];
         @throw exception;
     }
+    
+    self.conditions = [OPTLYCondition deserializeJSONArray:array];
 }
 
-- (void)setConditionsWithNSDictionary:(NSDictionary *)dictionary {
-    NSError *err = nil;
-    self.conditions = [OPTLYCondition deserializeJSON:dictionary error:nil];
-    if (err != nil) {
-        NSException *exception = [[NSException alloc] initWithName:err.domain reason:err.localizedFailureReason userInfo:@{@"Error" : err}];
-        @throw exception;
-    }
-}
-
-- (nullable NSNumber *)evaluateConditionsWithAttributes:(nullable NSDictionary<NSString *, id> *)attributes projectConfig:(nullable OPTLYProjectConfig *)config {
-    NSObject<OPTLYCondition> *condition = (NSObject<OPTLYCondition> *)[self.conditions firstObject];
-    if (condition) {
-        // Log Audience Evaluation Started
-        NSString *conditionString = [self getConditionsString];
-        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesAudienceEvaluatorEvaluationStartedWithConditions, self.audienceName, conditionString];
-        [config.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
-        
-        NSNumber *result = [condition evaluateConditionsWithAttributes:attributes projectConfig:config];
-        if (result == NULL) {
-            NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesAudienceEvaluatorEvaluationCompletedWithResult, self.audienceName, @"UNKNOWN"];
-            [config.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
+- (BOOL)evaluateConditionsWithAttributes:(NSDictionary<NSString *,NSString *> *)attributes {
+    for (NSObject<OPTLYCondition> *condition in self.conditions) {
+        if ([condition evaluateConditionsWithAttributes:attributes]) {
+            // if user satisfies any conditions, return true.
+            return true;
         }
-        else {
-            NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesAudienceEvaluatorEvaluationCompletedWithResult, self.audienceName, [result boolValue] ? @"TRUE" : @"FALSE"];
-            [config.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
-        }
-        return result;
     }
-    return nil;
+    // if user doesn't satisfy any conditions, return false.
+    return false;
 }
 
 @end

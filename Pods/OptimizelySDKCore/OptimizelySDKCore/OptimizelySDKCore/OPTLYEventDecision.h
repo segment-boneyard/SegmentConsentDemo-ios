@@ -18,20 +18,20 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 
 @protocol OPTLYEventDecision
 @end
 
-@interface OPTLYEventDecision : OPTLYJSONModel
+@interface OPTLYEventDecision : JSONModel
 
 // ID of chosen experiment, null if visitor is not targeted for any experiments
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *experimentId;
+@property (nonatomic, strong, nullable) NSString<Optional> *experimentId;
 // ID of chosen variation, null if if visitor is not targeted for any experiments
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *variationId;
+@property (nonatomic, strong, nullable) NSString<Optional> *variationId;
 // If true, the chosen experience was held back at the layer level
 // TODO - Remove later when this ticket is completed: https://optimizely.atlassian.net/browse/NB-1493
 @property (nonatomic, assign) BOOL isLayerHoldback;

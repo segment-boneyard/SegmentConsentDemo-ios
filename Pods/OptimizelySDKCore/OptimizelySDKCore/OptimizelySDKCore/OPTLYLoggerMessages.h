@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2017-2019, Optimizely, Inc. and contributors                   *
+ * Copyright 2016-2017, Optimizely, Inc. and contributors                   *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -26,30 +26,6 @@ extern NSString *const OPTLYLoggerMessagesVariationUserAssigned;
 // info
 extern NSString *const OPTLYLoggerMessagesActivationSuccess;
 extern NSString *const OPTLYLoggerMessagesConversionSuccess;
-extern NSString *const OPTLYLoggerMessagesConversionFailure;
-// error
-extern NSString *const OPTLYLoggerMessagesUserIdInvalid;
-extern NSString *const OPTLYLoggerMessagesActivateExperimentKeyEmpty;
-extern NSString *const OPTLYLoggerMessagesActivateExperimentKeyInvalid;
-extern NSString *const OPTLYLoggerMessagesTrackEventKeyEmpty;
-extern NSString *const OPTLYLoggerMessagesTrackEventKeyInvalid;
-extern NSString *const OPTLYLoggerMessagesTrackEventNoAssociation;
-extern NSString *const OPTLYLoggerMessagesTrackExperimentNoAssociation;
-extern NSString *const OPTLYLoggerMessagesTrackExperimentNotTracked;
-extern NSString *const OPTLYLoggerMessagesFeatureDisabledUserIdInvalid;
-extern NSString *const OPTLYLoggerMessagesFeatureDisabledFlagKeyInvalid;
-extern NSString *const OPTLYLoggerMessagesFeatureDisabled;
-extern NSString *const OPTLYLoggerMessagesFeatureEnabledNotExperimented;
-extern NSString *const OPTLYLoggerMessagesFeatureEnabled;
-extern NSString *const OPTLYLoggerMessagesFeatureVariableValueFlagKeyInvalid;
-extern NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableKeyInvalid;
-extern NSString *const OPTLYLoggerMessagesFeatureVariableValueUserIdInvalid;
-extern NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableInvalid;
-extern NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableTypeInvalid;
-extern NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableType;
-extern NSString *const OPTLYLoggerMessagesFeatureVariableValueNotUsed;
-extern NSString *const OPTLYLoggerMessagesFeatureVariableValueNotBucketed;
-extern NSString *const OPTLYLoggerMessagesFeatureDisabledReturnDefault;
 
 // ---- Bucketer ----
 // debug
@@ -91,7 +67,6 @@ extern NSString *const OPTLYLoggerMessagesDataStoreFileManagerSaveFile;
 
 // ---- Datafile Manager ----
 // debug
-extern NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedInvalidStatusCode;
 extern NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError;
 extern NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedNoChanges;
 extern NSString *const OPTLYLoggerMessagesDatafileManagerLastModifiedDate;
@@ -110,7 +85,7 @@ extern NSString *const OPTLYLoggerMessagesDatafileFetchIntervalInvalid;
 
 // ---- Datafile Versioning ----
 // warning
-extern NSString *const OPTLYLoggerMessagesDatafileVersion;
+extern NSString *const OPTLYLoggerMessagesInvalidDatafileVersion;
 
 // ---- Event Builder ----
 // debug
@@ -119,27 +94,18 @@ extern NSString *const OPTLYLoggerMessagesAttributeValueInvalidFormat;
 extern NSString *const OPTLYLoggerMessagesEventNotAssociatedWithExperiment;
 extern NSString *const OPTLYLoggerMessagesExperimentNotPartOfEvent;
 // warning
+extern NSString *const OPTLYLoggerMessagesBucketerInvalid;
 extern NSString *const OPTLYLoggerMessagesEventKeyInvalid;
+extern NSString *const OPTLYLoggerMessagesExperimentKeyInvalid;
+extern NSString *const OPTLYLoggerMessagesNotBuildingDecisionEventTicket;
 extern NSString *const OPTLYLoggerMessagesUserIdInvalid;
 extern NSString *const OPTLYLoggerMessagesVariationIdInvalid;
 extern NSString *const OPTLYLoggerMessagesEventNotPassAudienceEvaluation;
-extern NSString *const OPTLYLoggerMessagesRevenueValueFloat;
-extern NSString *const OPTLYLoggerMessagesRevenueValueString;
-extern NSString *const OPTLYLoggerMessagesRevenueValueIntegerOverflow;
-extern NSString *const OPTLYLoggerMessagesRevenueValueFloatOverflow;
-extern NSString *const OPTLYLoggerMessagesRevenueValueInvalidBoolean;
 extern NSString *const OPTLYLoggerMessagesRevenueValueInvalid;
-extern NSString *const OPTLYLoggerMessagesNumericValueString;
-extern NSString *const OPTLYLoggerMessagesNumericValueInvalidBoolean;
-extern NSString *const OPTLYLoggerMessagesNumericValueInvalidFloat;
-extern NSString *const OPTLYLoggerMessagesNumericValueInvalidString;
-extern NSString *const OPTLYLoggerMessagesNumericValueInvalid;
 extern NSString *const OPTLYLoggerMessagesEventTagValueInvalid;
 
 // ---- Event Dispatcher ----
 // info
-extern NSString *const OPTLYLoggerMessagesEventDispatcherActivationFailure;
-extern NSString *const OPTLYLoggerMessagesEventDispatcherEventNotTracked;
 extern NSString *const OPTLYLoggerMessagesEventDispatcherAttemptingToSendConversionEvent;
 extern NSString *const OPTLYLoggerMessagesEventDispatcherAttemptingToSendImpressionEvent;
 extern NSString *const OPTLYLoggerMessagesEventDispatcherTrackingSuccess;
@@ -163,10 +129,18 @@ extern NSString *const OPTLYLoggerMessagesEventDispatcherRemovedEvent;
 extern NSString *const OPTLYLoggerMessagesEventDispatcherInvalidEvent;
 
 // error
+extern NSString *const OPTLYLoggerMessagesEventDispatcherEventNotTracked;
+extern NSString *const OPTLYLoggerMessagesEventDispatcherActivationFailure;
+
+// ---- Live Variables ----
+// info
+extern NSString *const OPTLYLoggerMessagesNoVariationFoundForExperimentWithLiveVariable;
+// warning
+extern NSString *const OPTLYLoggerMessagesNoExperimentsContainVariable;
+extern NSString *const OPTLYLoggerMessagesVariableUnknownForVariableKey;
 
 // ---- Manager ----
 // error
-extern NSString *const OPTLYLoggerMessagesManagerBuilderBlockNotValid;
 extern NSString *const OPTLYLoggerMessagesManagerBuilderNotValid;
 extern NSString *const OPTLYLoggerMessagesManagerDatafileManagerDoesNotConformToOPTLYDatafileManagerProtocol;
 extern NSString *const OPTLYLoggerMessagesManagerErrorHandlerDoesNotConformToOPTLYErrorHandlerProtocol;
@@ -174,11 +148,6 @@ extern NSString *const OPTLYLoggerMessagesManagerEventDispatcherDoesNotConformTo
 extern NSString *const OPTLYLoggerMessagesManagerLoggerDoesNotConformToOPTLYLoggerProtocol;
 extern NSString *const OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId;
 extern NSString *const OPTLYLoggerMessagesManagerProjectIdCannotBeEmptyString;
-extern NSString *const OPTLYLoggerMessagesManagerInit;
-extern NSString *const OPTLYLoggerMessagesManagerInitWithCallback;
-extern NSString *const OPTLYLoggerMessagesManagerInitWithCallbackErrorDatafileDownload;
-extern NSString *const OPTLYLoggerMessagesManagerInitWithCallbackNoDatafileUpdates;
-extern NSString *const OPTLYLoggerMessagesManagerBundledDataLoaded;
 
 // ---- Project Config Getters ----
 // debug
@@ -189,17 +158,7 @@ extern NSString *const OPTLYLoggerMessagesEventUnknownForEventKey;
 extern NSString *const OPTLYLoggerMessagesExperimentIdUnknownForExperimentKey;
 extern NSString *const OPTLYLoggerMessagesExperimentUnknownForExperimentId;
 extern NSString *const OPTLYLoggerMessagesExperimentUnknownForExperimentKey;
-extern NSString *const OPTLYLoggerMessagesFeatureFlagUnknownForFeatureFlagKey;
-extern NSString *const OPTLYLoggerMessagesVariableUsageUnknownForVariableId;
-extern NSString *const OPTLYLoggerMessagesRolloutUnknownForRolloutId;
 extern NSString *const OPTLYLoggerMessagesGroupUnknownForGroupId;
-extern NSString *const OPTLYLoggerMessagesGetVariationNilVariation;
-extern NSString *const OPTLYLoggerMessagesVariationKeyUnknownForExperimentKey;
-extern NSString *const OPTLYLoggerMessagesProjectConfigUserIdInvalid;
-extern NSString *const OPTLYLoggerMessagesProjectConfigExperimentKeyInvalid;
-extern NSString *const OPTLYLoggerMessagesProjectConfigVariationKeyInvalid;
-extern NSString *const OPTLYLoggerMessagesAttributeIsReserved;
-extern NSString *const OPTLYLoggerMessagesAttributeNotFound;
 
 // ---- User Profile ----
 // debug
@@ -208,39 +167,16 @@ extern NSString *const OPTLYLoggerMessagesUserProfileAttemptToSaveVariation;
 extern NSString *const OPTLYLoggerMessagesUserProfileNoVariation;
 extern NSString *const OPTLYLoggerMessagesUserProfileRemoveVariation;
 extern NSString *const OPTLYLoggerMessagesUserProfileRemoveVariationNotFound;
-extern NSString *const OPTLYLoggerMessagesUserProfileServiceSaved;
+extern NSString *const OPTLYLoggerMessagesUserProfileSavedVariation;
 extern NSString *const OPTLYLoggerMessagesUserProfileVariation;
-extern NSString *const OPTLYLoggerMessagesUserProfileNotExist;
 // warning
 extern NSString *const OPTLYLoggerMessagesUserProfileUnableToSaveVariation;
 extern NSString *const OPTLYLoggerMessagesUserProfileVariationNoLongerInDatafile;
-extern NSString *const OPTLYLoggerMessagesUserProfileSaveInvalidUserId;
-extern NSString *const OPTLYLoggerMessagesUserProfileLookupInvalidFormat;
-extern NSString *const OPTLYLoggerMessagesUserProfileSaveInvalidFormat;
 
-// ---- Decision Service ----
-extern NSString *const OPTLYLoggerMessagesDecisionServiceExperimentNotRunning;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceFailAudienceTargeting;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceSavedVariationInvalid;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceUserProfileNotExist;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceSavedVariationParseError;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceGetVariationParseError;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceReplaceBucketEntity;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceSettingTheBucketingID;
-// FF = Feature Flag
-extern NSString *const OPTLYLoggerMessagesDecisionServiceFFNotUsed;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceFFUserBucketed;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceFFUserNotBucketed;
-// FF = Feature Rollout
-extern NSString *const OPTLYLoggerMessagesDecisionServiceFRNotUsed;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceFRUserBucketed;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceFRUserExcluded;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceFRUserNotBucketed;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceUserBucketed;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceUserNotBucketed;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceUserInVariation;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceGroupIdNotFound;
-extern NSString *const OPTLYLoggerMessagesDecisionServiceGroupUnknownForGroupId;
+// ---- Validator ----
+// info
+extern NSString *const OPTLYLoggerMessagesExperimentNotRunning;
+extern NSString *const OPTLYLoggerMessagesFailAudienceTargeting;
 
 // ---- HTTP Request Manager ----
 // Debug (not through logger handler)
@@ -248,23 +184,6 @@ extern NSString *const OPTLYHTTPRequestManagerGETWithParametersAttempt;
 extern NSString *const OPTLYHTTPRequestManagerGETIfModifiedSince;
 extern NSString *const OPTLYHTTPRequestManagerPOSTWithParameters;
 extern NSString *const OPTLYHTTPRequestManagerBackoffRetryStates;
-
-// ---- Audience Evaluator ----
-// info
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorEvaluationCompletedWithResult;
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorExperimentEvaluationCompletedWithResult;
-// warning
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorConditionEvaluatedAsUnknownForUnexpectedType;
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorUnknownMatchType;
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorUnknownConditionType;
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorUnsupportedValueType;
-// debug
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorEvaluationStartedWithConditions;
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorEvaluationStartedForExperiment;
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorConditionEvaluatedAsUnknownForMissingAttribute;
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorConditionEvaluatedAsUnknownForUnexpectedTypeNull;
-extern NSString *const OPTLYLoggerMessagesAudienceEvaluatorConditionEvaluatedAsUnknownForUnexpectedTypeNanInfinity;
-// error
 
 @interface OPTLYLoggerMessages : NSObject
 

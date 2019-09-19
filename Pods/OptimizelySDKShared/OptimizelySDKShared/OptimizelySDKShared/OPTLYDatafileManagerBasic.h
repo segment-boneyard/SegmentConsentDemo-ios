@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -21,17 +21,15 @@
     #import <OptimizelySDKCore/OPTLYHTTPRequestManager.h>
 #endif
 
-#import "OPTLYDatafileConfig.h"
-
 @protocol OPTLYErrorHandler, OPTLYLogger;
 @protocol OPTLYDatafileManager <NSObject>
 
 /**
  * Download the datafile for the project ID
- * @param datafileConfig The project ID of the datafile to request.
+ * @param projectId The project ID of the datafile to request.
  * @param completion Completion handler.
  */
-- (void)downloadDatafile:(nonnull OPTLYDatafileConfig *)datafileConfig
+- (void)downloadDatafile:(nonnull NSString *)projectId
        completionHandler:(nullable void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))completion;
 
 /**
@@ -42,17 +40,10 @@
 
 /**
  * Retrieve the datafile that is currently saved on the device.
- * @param error An error value if getting the datafile was unsuccessful.
  * @return NSData object that should be the most recently downloaded datafile.
  *      Will be nil if no datafile has been successfully downloaded.
  */
-- (NSData * _Nullable)getSavedDatafile:(out NSError * _Nullable __autoreleasing * _Nullable)error NS_SWIFT_NOTHROW;
-
-/**
- * Determines if the datafile has been cached.
- * @return BOOL Boolean flag that indicates if the datafile has been cached.
- */
-- (BOOL)isDatafileCached;
+- (NSData * _Nullable)getSavedDatafile;
 
 @end
 
@@ -63,6 +54,12 @@
  * This method uses compile and run time checks
  */
 + (BOOL)conformsToOPTLYDatafileManagerProtocol:(nonnull Class)instanceClass;
+
+/**
+ * Utility method that returns the URL path for the datafile of a particular project.
+ * @param projectId The project ID of the datafile whose URL path we are looking for.
+ */
++ (NSURL * _Nonnull)projectConfigURLPath:(nonnull NSString *)projectId;
 
 @end
 

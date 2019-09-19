@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016-2017, Optimizely, Inc. and contributors                   *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -20,14 +20,14 @@
     #import "OPTLYEventDispatcher.h"
     #import "OPTLYLogger.h"
     #import "OPTLYManagerBuilder.h"
-    #import "OPTLYUserProfileService.h"
+    #import "OPTLYUserProfile.h"
 #else
     #import <OptimizelySDKCore/OPTLYErrorHandler.h>
     #import <OptimizelySDKCore/OPTLYLogger.h>
     #import <OptimizelySDKDatafileManager/OPTLYDatafileManager.h>
     #import <OptimizelySDKEventDispatcher/OPTLYEventDispatcher.h>
     #import <OptimizelySDKShared/OPTLYManagerBuilder.h>
-    #import <OptimizelySDKUserProfileService/OPTLYUserProfileService.h>
+    #import <OptimizelySDKUserProfile/OPTLYUserProfile.h>
 #endif
 
 #import "OPTLYManager.h"
@@ -35,8 +35,6 @@
 static NSString * const kClientEngine = @"ios-sdk";
 
 @implementation OPTLYManager
-
-#pragma mark - Constructors
 
 + (instancetype)init:(OPTLYManagerBuilderBlock)block {
     return [OPTLYManager initWithBuilder:[OPTLYManagerBuilder builderWithBlock:block]];
@@ -54,6 +52,7 @@ static NSString * const kClientEngine = @"ios-sdk";
     self = [super init];
     if (self != nil) {
 
+        
         // --- logger ---
         if (!builder.logger) {
             self.logger = [OPTLYLoggerDefault new];
@@ -88,18 +87,14 @@ static NSString * const kClientEngine = @"ios-sdk";
         // --- project id ---
         self.projectId = builder.projectId;
         
-        self.sdkKey = builder.sdkKey;
-        
-        self.datafileConfig = [[OPTLYDatafileConfig alloc] initWithProjectId:self.projectId withSDKKey:self.sdkKey];
-        
         // --- datafile manager ---
         if (!builder.datafileManager) {
-            // set default datafile manager if no datafile manager is set            
-            self.datafileManager = [[OPTLYDatafileManagerDefault alloc] initWithBuilder:[OPTLYDatafileManagerBuilder builderWithBlock:^(OPTLYDatafileManagerBuilder * _Nullable builder) {
-                builder.datafileConfig = self.datafileConfig;
+            // set default datafile manager if no datafile manager is set
+            self.datafileManager = [OPTLYDatafileManagerDefault init:^(OPTLYDatafileManagerBuilder * _Nullable builder) {
+                builder.projectId = self.projectId;
                 builder.errorHandler = self.errorHandler;
                 builder.logger = self.logger;
-            }]];
+            }];
         } else {
             self.datafileManager = builder.datafileManager;
         }
@@ -107,21 +102,21 @@ static NSString * const kClientEngine = @"ios-sdk";
         // --- event dispatcher ---
         if (!builder.eventDispatcher) {
             // set default event dispatcher if no event dispatcher is set
-            self.eventDispatcher = [[OPTLYEventDispatcherDefault alloc] initWithBuilder:[OPTLYEventDispatcherBuilder builderWithBlock:^(OPTLYEventDispatcherBuilder * _Nullable builder) {
+            self.eventDispatcher = [OPTLYEventDispatcherDefault init:^(OPTLYEventDispatcherBuilder * _Nullable builder) {
                 builder.logger = self.logger;
-            }]];
+            }];
         } else {
             self.eventDispatcher = builder.eventDispatcher;
         }
         
         // --- user profile ---
-        if (!builder.userProfileService) {
+        if (!builder.userProfile) {
             // set default user profile if no user profile is set
-            self.userProfileService = [[OPTLYUserProfileServiceDefault alloc] initWithBuilder:[OPTLYUserProfileServiceBuilder builderWithBlock:^(OPTLYUserProfileServiceBuilder * _Nullable builder) {
+            self.userProfile = [OPTLYUserProfileDefault init:^(OPTLYUserProfileBuilder * _Nullable builder) {
                 builder.logger = self.logger;
-            }]];
+            }];
         } else {
-            self.userProfileService = builder.userProfileService;
+            self.userProfile = builder.userProfile;
         }
         
         // --- client engine ---
@@ -129,9 +124,9 @@ static NSString * const kClientEngine = @"ios-sdk";
         
         // --- client version ---
 #ifdef UNIVERSAL
-        _clientVersion = OPTIMIZELY_SDK_VERSION;
+        _clientVersion = OPTIMIZELY_SDK_iOS_UNIVERSAL_VERSION;
 #else
-        _clientVersion = OPTIMIZELY_SDK_VERSION;
+        _clientVersion = OPTIMIZELY_SDK_iOS_VERSION;
 #endif
     }
     return self;

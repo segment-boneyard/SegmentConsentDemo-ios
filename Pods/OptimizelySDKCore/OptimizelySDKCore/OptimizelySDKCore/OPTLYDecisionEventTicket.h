@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016,2018, Optimizely, Inc. and contributors                        *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -15,50 +15,50 @@
  ***************************************************************************/
 
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 
 // Model object representing a Decision Ticket sent when layer decision is made.
 
-@class OPTLYEventHeader, OPTLYEventDecision, OPTLYEventDecisionTicket, OPTLYEventFeature;
+@class OPTLYEventHeader, OPTLYEventDecision;
 @protocol OPTLYEventDecisionTicket, OPTLYEventFeature;
 
-@interface OPTLYDecisionEventTicket : OPTLYJSONModel
+@interface OPTLYDecisionEventTicket : JSONModel
 
 //The time the decision was made.
 @property (nonatomic, assign) long long timestamp;
 // Revision of client DATA, corresponding to a stored snapshot
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *revision;
+@property (nonatomic, strong, nullable) NSString<Optional> *revision;
 // Unique ID shared by all events in the current activation cycle
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *activationId;
+@property (nonatomic, strong, nullable) NSString<Optional> *activationId;
 // GUID ID uniquely identifying the decision event triggering
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *decisionId;
+@property (nonatomic, strong, nullable) NSString<Optional> *decisionId;
 // GUID ID uniquely identifying the user’s current session
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *sessionId;
+@property (nonatomic, strong, nullable) NSString<Optional> *sessionId;
 // Project ID of the decision.
 @property (nonatomic, strong, nonnull) NSString *projectId;
 // Account ID of the decision.
 @property (nonatomic, strong, nonnull) NSString *accountId;
 // The type of client engine sending this event: ‘ios’, ‘android’, ‘js’.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *clientEngine;
+@property (nonatomic, strong, nullable) NSString<Optional> *clientEngine;
 // The version of the client engine sending this event.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *clientVersion;
+@property (nonatomic, strong, nullable) NSString<Optional> *clientVersion;
 // Event information taken from the http header instead of the payload
-@property (nonatomic, strong, nullable) OPTLYEventHeader<OPTLYOptional> *header;
+@property (nonatomic, strong, nullable) OPTLYEventHeader<Optional> *header;
 // The layer affected by this decision
 @property (nonatomic, strong, nonnull) NSString *layerId;
 // Visitor-specific input to Client Decision Engine
-@property (nonatomic, strong, nullable) NSArray<OPTLYEventDecisionTicket *><OPTLYEventDecisionTicket, OPTLYOptional> *decisionTicket;
+@property (nonatomic, strong, nullable) NSArray<OPTLYEventDecisionTicket, Optional> *decisionTicket;
 // Output of the Client Decision Engine
 @property (nonatomic, strong, nonnull) OPTLYEventDecision *decision;
 // The ID of the user
 @property (nonatomic, strong, nonnull) NSString *visitorId;
 // The unique user ID of the user (if available)
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *visitorUUID;
+@property (nonatomic, strong, nullable) NSString<Optional> *visitorUUID;
 // Features attached to the user
-@property (nonatomic, strong, nonnull) NSArray<OPTLYEventFeature *><OPTLYEventFeature> *userFeatures;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYEventFeature> *userFeatures;
 // If true, then the experience in this decision was held back at the global level
 @property (nonatomic, assign) BOOL isGlobalHoldback;
 // If true, then anonymize IP.

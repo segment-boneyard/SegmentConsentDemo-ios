@@ -16,9 +16,9 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 
 /**
@@ -28,7 +28,7 @@
 @protocol OPTLYTrafficAllocation
 @end
 
-@interface OPTLYTrafficAllocation : OPTLYJSONModel
+@interface OPTLYTrafficAllocation : JSONModel
 
 /// The corresponding entity Id.
 @property (nonatomic, strong) NSString *entityId;

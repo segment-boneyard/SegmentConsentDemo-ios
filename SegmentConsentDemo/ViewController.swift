@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Analytics
 
 class ViewController: UIViewController {
     @IBOutlet weak var debugTextView: UITextView!

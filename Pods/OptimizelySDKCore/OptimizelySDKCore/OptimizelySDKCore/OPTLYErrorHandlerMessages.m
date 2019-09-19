@@ -18,8 +18,7 @@
 
 NSString * const OPTLYErrorHandlerMessagesDomain = @"com.optimizely.optimizelySDK";
 
-NSString * const OPTLYErrorHandlerMessagesDataFileInvalid = @"Provided 'datafile' is in an invalid format.";
-NSString * const OPTLYErrorHandlerMessagesDataFileVersionInvalid = @"Provided 'datafile' version %@ is not supported.";
+NSString * const OPTLYErrorHandlerMessagesDataFileInvalid = @"Provided 'data file' is in an invalid format.";
 NSString * const OPTLYErrorHandlerMessagesEventDispatcherInvalid = @"Provided 'event dispatcher' is in an invalid format.";
 NSString * const OPTLYErrorHandlerMessagesLoggerInvalid = @"Provided 'logger' is in an invalid format.";
 NSString * const OPTLYErrorHandlerMessagesErrorHandlerInvalid = @"Provided 'error handler' is in an invalid format.";
@@ -45,6 +44,7 @@ NSString * const OPTLYErrorHandlerMessagesBucketingIdInvalid = @"Invalid bucketi
 NSString * const OPTLYErrorHandlerMessagesTrafficAllocationUnknown = @"Traffic allocations for %@ does not exist in datafile."; // experiment or group id
 NSString * const OPTLYErrorHandlerMessagesEventDispatchFailed = @"Event %@ failed to dispatch.";
 NSString * const OPTLYErrorHandlerMessagesConfigInvalid = @"Project config is nil or invalid.";
+NSString * const OPTLYErrorHandlerMessagesLiveVariableKeyUnknown = @"Live variable key %@ is not in datafile."; // live variable key
 
 // Manager Errors
 NSString *const OPTLYErrorHandlerMessagesManagerBuilderInvalid = @"Provided OPTLYManagerBuilder object is invalid.";
@@ -58,9 +58,6 @@ NSString *const OPTLYErrorHandlerMessagesDataStoreInvalidDataStoreEntityValue = 
 NSString *const OPTLYErrorHandlerMessagesHTTPRequestManagerPOSTRetryFailure = @"[HTTP] The max backoff retry has been exceeded. POST failed with error: %@.";
 NSString *const OPTLYErrorHandlerMessagesHTTPRequestManagerGETRetryFailure = @"[HTTP] The max backoff retry has been exceeded. GET failed with error: %@.";
 NSString *const OPTLYErrorHandlerMessagesHTTPRequestManagerGETIfModifiedFailure = @"[HTTP] The max backoff retry has been exceeded. GET if modified failed with error: %@.";
-
-// ---- Project Config ----
-NSString *const OPTLYErrorHandlerMessagesProjectConfigInvalidAudienceCondition = @"[CONFIG] Invalid audience condition.";
 
 @implementation OPTLYErrorHandlerMessages
 @end

@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2017-2019, Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -18,7 +18,6 @@
 #import "OPTLYAudience.h"
 #import "OPTLYBucketer.h"
 #import "OPTLYDatafileKeys.h"
-#import "OPTLYDecisionService.h"
 #import "OPTLYErrorHandler.h"
 #import "OPTLYEvent.h"
 #import "OPTLYExperiment.h"
@@ -26,32 +25,24 @@
 #import "OPTLYLog.h"
 #import "OPTLYLogger.h"
 #import "OPTLYProjectConfig.h"
-#import "OPTLYUserProfileServiceBasic.h"
+#import "OPTLYValidator.h"
+#import "OPTLYUserProfileBasic.h"
+#import "OPTLYVariable.h"
 #import "OPTLYVariation.h"
-#import "OPTLYFeatureFlag.h"
-#import "OPTLYRollout.h"
 
-NSString * const kExpectedDatafileVersion = @"4";
-NSString * const kReservedAttributePrefix = @"$opt_";
-// Array representing supported datafile versions.
-static NSArray *supportedDatafileVersions = nil;
+NSString * const kExpectedDatafileVersion  = @"3";
 
 @interface OPTLYProjectConfig()
 
-@property (nonatomic, strong) NSDictionary<NSString *, OPTLYAudience *><OPTLYIgnore> *audienceIdToAudienceMap;
-@property (nonatomic, strong) NSDictionary<NSString *, OPTLYEvent *><OPTLYIgnore> *eventKeyToEventMap;
-@property (nonatomic, strong) NSDictionary<NSString *, NSString *><OPTLYIgnore> *eventKeyToEventIdMap;
-@property (nonatomic, strong) NSDictionary<NSString *, OPTLYExperiment *><OPTLYIgnore> *experimentIdToExperimentMap;
-@property (nonatomic, strong) NSDictionary<NSString *, OPTLYExperiment *><OPTLYIgnore> *experimentKeyToExperimentMap;
-@property (nonatomic, strong) NSDictionary<NSString *, OPTLYFeatureFlag *><OPTLYIgnore> *featureFlagKeyToFeatureFlagMap;
-@property (nonatomic, strong) NSDictionary<NSString *, OPTLYRollout *><OPTLYIgnore> *rolloutIdToRolloutMap;
-@property (nonatomic, strong) NSDictionary<NSString *, NSArray *><OPTLYIgnore> *experimentIdToFeatureIdsMap;
-@property (nonatomic, strong) NSDictionary<NSString *, NSString *><OPTLYIgnore> *experimentKeyToExperimentIdMap;
-@property (nonatomic, strong) NSDictionary<NSString *, OPTLYGroup *><OPTLYIgnore> *groupIdToGroupMap;
-@property (nonatomic, strong) NSDictionary<NSString *, OPTLYAttribute *><OPTLYIgnore> *attributeKeyToAttributeMap;
-//@property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableDictionary<NSString *, NSString *>><OPTLYIgnore> *forcedVariationMap;
-//    userId --> experimentId --> variationId
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableDictionary *><OPTLYIgnore> *forcedVariationMap;
+@property (nonatomic, strong) NSDictionary<NSString *, OPTLYAudience *><Ignore> *audienceIdToAudienceMap;
+@property (nonatomic, strong) NSDictionary<NSString *, OPTLYEvent *><Ignore> *eventKeyToEventMap;
+@property (nonatomic, strong) NSDictionary<NSString *, NSString *><Ignore> *eventKeyToEventIdMap;
+@property (nonatomic, strong) NSDictionary<NSString *, OPTLYExperiment *><Ignore> *experimentIdToExperimentMap;
+@property (nonatomic, strong) NSDictionary<NSString *, OPTLYExperiment *><Ignore> *experimentKeyToExperimentMap;
+@property (nonatomic, strong) NSDictionary<NSString *, NSString *><Ignore> *experimentKeyToExperimentIdMap;
+@property (nonatomic, strong) NSDictionary<NSString *, OPTLYGroup *><Ignore> *groupIdToGroupMap;
+@property (nonatomic, strong) NSDictionary<NSString *, OPTLYAttribute *><Ignore> *attributeKeyToAttributeMap;
+@property (nonatomic, strong) NSDictionary<NSString *, OPTLYVariable *><Ignore> *variableKeyToVariableMap;
 
 @end
 
@@ -62,14 +53,6 @@ static NSArray *supportedDatafileVersions = nil;
 }
 
 - (instancetype)initWithBuilder:(OPTLYProjectConfigBuilder *)builder {
-
-    // initialize all class static objects
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        // static objects which should be initialized once
-        supportedDatafileVersions = @[@"2", @"3", @"4"];
-    });
-    
     // check for valid error handler
     if (builder.errorHandler) {
         if (![OPTLYErrorHandler conformsToOPTLYErrorHandlerProtocol:[builder.errorHandler class]]) {
@@ -119,25 +102,12 @@ static NSArray *supportedDatafileVersions = nil;
         NSError *datafileError;
         OPTLYProjectConfig *projectConfig = [[OPTLYProjectConfig alloc] initWithData:builder.datafile error:&datafileError];
         
-        if (!datafileError && ![supportedDatafileVersions containsObject:projectConfig.version]) {
-            NSString *description = [NSString stringWithFormat:OPTLYErrorHandlerMessagesDataFileInvalid, projectConfig.version];
-            datafileError = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                                code:OPTLYErrorTypesDatafileInvalid
-                                            userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(description, nil)}];
-        }
-        
         // check if project config's datafile version matches expected datafile version
         if (![projectConfig.version isEqualToString:kExpectedDatafileVersion]) {
-            NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileVersion, projectConfig.version];
-            [builder.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
+            NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesInvalidDatafileVersion, kExpectedDatafileVersion, projectConfig.version];
+            [builder.logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
         }
         
-        if (projectConfig.anonymizeIP == nil) {
-            NSString *logMessage = @"Forcing old datafile to include anonymizeIP required by V4 format.";
-            [builder.logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
-            projectConfig.anonymizeIP = @1;
-        }
-
         if (datafileError)
         {
             NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
@@ -154,26 +124,26 @@ static NSArray *supportedDatafileVersions = nil;
         [builder.errorHandler handleException:datafileException];
     }
     
-    if (builder.userProfileService) {
-        if (![OPTLYUserProfileServiceUtility conformsToOPTLYUserProfileServiceProtocol:[builder.userProfileService class]]) {
+    if (builder.userProfile) {
+        if (![OPTLYUserProfileUtility conformsToOPTLYUserProfileProtocol:[builder.userProfile class]]) {
             [builder.logger logMessage:OPTLYErrorHandlerMessagesUserProfileInvalid withLevel:OptimizelyLogLevelWarning];
         } else {
-            _userProfileService = (id<OPTLYUserProfileService, OPTLYIgnore>)builder.userProfileService;
+            _userProfile = (id<OPTLYUserProfile, Ignore>)builder.userProfile;
         }
     }
     
     _clientEngine = builder.clientEngine;
     _clientVersion = builder.clientVersion;
     
-    _errorHandler = (id<OPTLYErrorHandler, OPTLYIgnore>)builder.errorHandler;
-    _logger = (id<OPTLYLogger, OPTLYIgnore>)builder.logger;
+    _errorHandler = (id<OPTLYErrorHandler, Ignore>)builder.errorHandler;
+    _logger = (id<OPTLYLogger, Ignore>)builder.logger;
     return self;
 }
 
 - (nullable instancetype)initWithDatafile:(nonnull NSData *)datafile {
-    return [[OPTLYProjectConfig alloc] initWithBuilder:[OPTLYProjectConfigBuilder builderWithBlock:^(OPTLYProjectConfigBuilder * _Nullable builder) {
+    return [OPTLYProjectConfig init:^(OPTLYProjectConfigBuilder * _Nullable builder) {
         builder.datafile = datafile;
-    }]];
+    }];
 }
 
 #pragma mark -- Getters --
@@ -194,27 +164,6 @@ static NSArray *supportedDatafileVersions = nil;
         [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
     }
     return attribute;
-}
-
-- (nullable NSString *)getAttributeIdForKey:(nonnull NSString *)attributeKey {
-    OPTLYAttribute *attribute = self.attributeKeyToAttributeMap[attributeKey];
-    BOOL hasReservedPrefix = [attributeKey hasPrefix:kReservedAttributePrefix];
-    NSString *attributeId;
-    if (attribute) {
-        if (hasReservedPrefix) {
-            NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesAttributeIsReserved, attributeKey, kReservedAttributePrefix];
-            [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
-        }
-        attributeId = attribute.attributeId;
-    } else if (hasReservedPrefix) {
-        attributeId = attributeKey;
-    }
-    
-    if (attributeId == nil) {
-        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesAttributeNotFound, attributeKey];
-        [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelError];
-    }
-    return attributeId;
 }
 
 - (NSString *)getEventIdForKey:(NSString *)eventKey {
@@ -263,11 +212,6 @@ static NSArray *supportedDatafileVersions = nil;
     return experimentId;
 }
 
-- (BOOL)isFeatureExperiment:(NSString *)experimentId
-{
-    return [self.experimentIdToFeatureIdsMap.allKeys containsObject:experimentId];
-}
-
 - (OPTLYGroup *)getGroupForGroupId:(NSString *)groupId {
     OPTLYGroup *group = self.groupIdToGroupMap[groupId];
     if (!group) {
@@ -277,113 +221,13 @@ static NSArray *supportedDatafileVersions = nil;
     return group;
 }
 
-- (OPTLYFeatureFlag *)getFeatureFlagForKey:(NSString *)featureFlagKey {
-    OPTLYFeatureFlag *featureFlag = self.featureFlagKeyToFeatureFlagMap[featureFlagKey];
-    if (!featureFlag) {
-        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesFeatureFlagUnknownForFeatureFlagKey, featureFlagKey];
+- (OPTLYVariable *)getVariableForVariableKey:(NSString *)variableKey {
+    OPTLYVariable *variable = self.variableKeyToVariableMap[variableKey];
+    if (!variable) {
+        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesVariableUnknownForVariableKey, variableKey];
         [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
     }
-    return featureFlag;
-}
-
-- (OPTLYRollout *)getRolloutForId:(NSString *)rolloutId {
-    OPTLYRollout *rollout = self.rolloutIdToRolloutMap[rolloutId];
-    if (!rollout) {
-        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesRolloutUnknownForRolloutId, rolloutId];
-        [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
-    }
-    return rollout;
-}
-
-#pragma mark -- Forced Variation Methods --
-
-- (OPTLYVariation *)getForcedVariation:(nonnull NSString *)experimentKey
-                                userId:(nonnull NSString *)userId {
-
-    NSMutableDictionary<NSString *, NSString *> *dictionary = self.forcedVariationMap[userId];
-    if (dictionary == nil) {
-        return nil;
-    }
-    // Get experiment from experimentKey .
-    OPTLYExperiment *experiment = [self getExperimentForKey:experimentKey];
-    // this case is logged in getExperimentFromKey
-    if (!experiment || [self isNullOrEmpty:experiment.experimentId]) {
-        return nil;
-    }
-    
-    OPTLYVariation *variation = nil;
-    @synchronized (self.forcedVariationMap) {
-        // Get variation from experimentId and variationId .
-        NSString *variationId = dictionary[experiment.experimentId];
-        if ([self isNullOrEmpty:variationId]) {
-            return nil;
-        }
-        variation = [experiment getVariationForVariationId:variationId];
-        
-        if (!variation || [self isNullOrEmpty:variation.variationKey]) {
-            return nil;
-        }
-    }
-    
-    return variation;
-}
-
-- (BOOL)setForcedVariation:(nonnull NSString *)experimentKey
-                    userId:(nonnull NSString *)userId
-              variationKey:(nullable NSString *)variationKey {
-    // Return YES if there were no errors, OW return NO .
-    //Check if variationKey is empty string
-    if (variationKey != nil && [variationKey isEqualToString:@""]) {
-        [self.logger logMessage:OPTLYLoggerMessagesProjectConfigVariationKeyInvalid withLevel:OptimizelyLogLevelDebug];
-        return NO;
-    }
-    
-    // Get experiment from experimentKey .
-    OPTLYExperiment *experiment = [self getExperimentForKey:experimentKey];
-    if (!experiment) {
-        // NOTE: getExperimentForKey: will log any non-existent experimentKey and return experiment == nil for us.
-        return NO;
-    }
-    NSString *experimentId = experiment.experimentId;
-    //Check if experimentId is valid
-    if ([self isNullOrEmpty:experimentId]) {
-        return NO;
-    }
-    
-    @synchronized (self.forcedVariationMap) {
-        // clear the forced variation if the variation key is null
-        if (variationKey == nil) {
-            // Locate relevant dictionary inside forcedVariationMap
-            NSMutableDictionary<NSString *, NSString *> *dictionary = self.forcedVariationMap[userId];
-            if (dictionary != nil) {
-                [dictionary removeObjectForKey:experimentId];
-                self.forcedVariationMap[userId] = dictionary;
-            }
-            return YES;
-        }
-    }
-    
-    // Get variation from experiment and non-nil variationKey, if applicable.
-    OPTLYVariation *variation = [experiment getVariationForVariationKey:variationKey];
-    if (!variation || [self isNullOrEmpty:variation.variationId]) {
-        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesVariationKeyUnknownForExperimentKey, variationKey, experimentKey];
-        [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
-        // Leave in current state, and report NO meaning there was an error.
-        return NO;
-    }
-    
-    @synchronized (self.forcedVariationMap) {
-        // Add User if not exist.
-        NSMutableDictionary<NSString *, NSString *> *dictionary = self.forcedVariationMap[userId];
-        if (dictionary == nil) {
-            // We need a non-nil dictionary to store an OPTLYVariation .
-            dictionary = [[NSMutableDictionary alloc] init];
-            self.forcedVariationMap[userId] = dictionary;
-        }
-        // Add/Replace Experiment to Variation ID map.
-        self.forcedVariationMap[userId][experimentId] = variation.variationId;
-    };
-    return YES;
+    return variable;
 }
 
 #pragma mark -- Property Getters --
@@ -455,14 +299,6 @@ static NSArray *supportedDatafileVersions = nil;
     return _experimentKeyToExperimentIdMap;
 }
 
-- (NSDictionary<NSString *,NSArray *><OPTLYIgnore> *)experimentIdToFeatureIdsMap
-{
-    if (!_experimentIdToFeatureIdsMap) {
-        _experimentIdToFeatureIdsMap = [self generateExperimentIdToFeatureIdsMap];
-    }
-    return _experimentIdToFeatureIdsMap;
-}
-
 - (NSDictionary<NSString *, OPTLYGroup *> *)groupIdToGroupMap {
     if (!_groupIdToGroupMap) {
         _groupIdToGroupMap = [OPTLYProjectConfig generateGroupIdToGroupMapFromGroupsArray:_groups];
@@ -470,28 +306,11 @@ static NSArray *supportedDatafileVersions = nil;
     return _groupIdToGroupMap;
 }
 
-//- (NSMutableDictionary<NSString *, NSMutableDictionary<NSString *, NSString *>> *)forcedVariationMap {
-- (NSMutableDictionary<NSString *, NSMutableDictionary *> *)forcedVariationMap {
-    @synchronized (self) {
-        if (!_forcedVariationMap) {
-            _forcedVariationMap = [[NSMutableDictionary alloc] init];
-        }
+- (NSDictionary<NSString *, OPTLYVariable *> *)variableKeyToVariableMap {
+    if (!_variableKeyToVariableMap) {
+        _variableKeyToVariableMap = [self generateVariableKeyToVariableMap];
     }
-    return _forcedVariationMap;
-}
-
-- (NSDictionary<NSString *, OPTLYFeatureFlag *> *)featureFlagKeyToFeatureFlagMap {
-    if (!_featureFlagKeyToFeatureFlagMap) {
-        _featureFlagKeyToFeatureFlagMap = [self generateFeatureFlagKeyToFeatureFlagMap];
-    }
-    return  _featureFlagKeyToFeatureFlagMap;
-}
-
-- (NSDictionary<NSString *, OPTLYRollout *> *)rolloutIdToRolloutMap {
-    if (!_rolloutIdToRolloutMap) {
-        _rolloutIdToRolloutMap = [self generateRolloutIdToRolloutMap];
-    }
-    return _rolloutIdToRolloutMap;
+    return _variableKeyToVariableMap;
 }
 
 #pragma mark -- Generate Mappings --
@@ -502,13 +321,6 @@ static NSArray *supportedDatafileVersions = nil;
     for (OPTLYAudience *audience in self.audiences) {
         NSString *audienceId = audience.audienceId;
         map[audienceId] = audience;
-    }
-    //override previously mapped audience objects with typed audience objects
-    if (self.typedAudiences) {
-        for (OPTLYAudience *audience in self.typedAudiences) {
-            NSString *audienceId = audience.audienceId;
-            map[audienceId] = audience;
-        }
     }
     return map;
 }
@@ -574,24 +386,6 @@ static NSArray *supportedDatafileVersions = nil;
     return [map copy];
 }
 
-- (NSDictionary<NSString *, NSArray *> *)generateExperimentIdToFeatureIdsMap {
-    NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-    for (OPTLYFeatureFlag *featureFlag in self.featureFlags) {
-        for (NSString *experimentId in featureFlag.experimentIds) {
-            if ([map.allKeys containsObject:experimentId]) {
-                NSMutableArray *featureIdsArray = [[NSMutableArray alloc] initWithArray:map[experimentId]];
-                [featureIdsArray addObject:featureFlag.flagId];
-                map[experimentId] = [featureIdsArray copy];
-            }
-            else {
-                NSArray *featureIdsArray = @[featureFlag.flagId];
-                map[experimentId] = featureIdsArray;
-            }
-        }
-    }
-    return [map copy];
-}
-
 + (NSDictionary<NSString *, OPTLYGroup *> *)generateGroupIdToGroupMapFromGroupsArray:(NSArray<OPTLYGroup *> *) groups{
     NSMutableDictionary *map = [[NSMutableDictionary alloc] initWithCapacity:groups.count];
     for (OPTLYGroup *group in groups) {
@@ -600,20 +394,11 @@ static NSArray *supportedDatafileVersions = nil;
     return [NSDictionary dictionaryWithDictionary:map];
 }
 
-- (NSDictionary<NSString *, OPTLYFeatureFlag *> *)generateFeatureFlagKeyToFeatureFlagMap {
+- (NSDictionary<NSString *, OPTLYVariable *> *)generateVariableKeyToVariableMap {
     NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-    for (OPTLYFeatureFlag *featureFlag in self.featureFlags) {
-        map[featureFlag.key] = featureFlag;
+    for (OPTLYVariable *variable in self.variables) {
+        map[variable.variableKey] = variable;
     }
-    return [NSDictionary dictionaryWithDictionary:map];
-}
-
-- (NSDictionary<NSString *, OPTLYRollout *> *)generateRolloutIdToRolloutMap {
-    NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-    for (OPTLYRollout *rollout in self.rollouts) {
-        map[rollout.rolloutId] = rollout;
-    }
-    
     return [NSDictionary dictionaryWithDictionary:map];
 }
 
@@ -622,30 +407,85 @@ static NSArray *supportedDatafileVersions = nil;
 // TODO: Remove bucketer from parameters -- this is not needed
 - (OPTLYVariation *)getVariationForExperiment:(NSString *)experimentKey
                                        userId:(NSString *)userId
-                                   attributes:(NSDictionary<NSString *, id> *)attributes
+                                   attributes:(NSDictionary<NSString *,NSString *> *)attributes
                                      bucketer:(id<OPTLYBucketer>)bucketer
 {
-    OPTLYExperiment *experiment = [self getExperimentForKey:experimentKey];
-    OPTLYDecisionService *decisionService = [[OPTLYDecisionService alloc] initWithProjectConfig:self
-                                                                                       bucketer:bucketer];
-    OPTLYVariation *bucketedVariation = [decisionService getVariation:userId
-                                                           experiment:experiment
-                                                           attributes:attributes];
-    
-    NSString *logMessage = nil;
-    
-    if (bucketedVariation) {
-        logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesVariationUserAssigned, userId, bucketedVariation.variationKey, experimentKey];
-    } else {
-        logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesGetVariationNilVariation, userId, experimentKey];
+    if (![OPTLYValidator isExperimentActive:self
+                              experimentKey:experimentKey]) {
+        return false;
     }
     
-    [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
+    // check if experiment is whitelisted
+    OPTLYExperiment *experiment = [self getExperimentForKey:experimentKey];
+    if ([self checkWhitelistingForUser:userId experiment:experiment]) {
+        return [self getWhitelistedVariationForUser:userId experiment:experiment];
+    }
     
+    // check for sticky bucketing
+    NSString *experimentId = [self getExperimentIdForKey:experimentKey];
+    if (self.userProfile != nil) {
+        NSString *storedVariationId = [self.userProfile getVariationIdForUserId:userId experimentId:experimentId];
+        if (storedVariationId != nil) {
+            [self.logger logMessage:[NSString stringWithFormat:OPTLYLoggerMessagesUserProfileBucketerUserDataRetrieved, userId, experimentId, storedVariationId]
+                          withLevel:OptimizelyLogLevelDebug];
+            OPTLYVariation *storedVariation = [[self getExperimentForId:experimentId] getVariationForVariationId:storedVariationId];
+            if (storedVariation != nil) {
+                return storedVariation;
+            }
+            else { // stored variation is no longer in datafile
+                [self.userProfile removeUserId:userId experimentId:experimentId];
+                [self.logger logMessage:[NSString stringWithFormat:OPTLYLoggerMessagesUserProfileVariationNoLongerInDatafile, storedVariationId, experimentId]
+                              withLevel:OptimizelyLogLevelWarning];
+            }
+        }
+    }
+    
+    // validate preconditions
+    OPTLYVariation *bucketedVariation = nil;
+    if ([OPTLYValidator userPassesTargeting:self
+                              experimentKey:experiment.experimentKey
+                                     userId:userId
+                                 attributes:attributes]) {
+        // bucket user into a variation
+        bucketedVariation = [bucketer bucketExperiment:experiment withUserId:userId];
+    }
+    if (bucketedVariation != nil) {
+        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesVariationUserAssigned, userId, bucketedVariation.variationKey, experimentKey];
+        [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
+        // Attempt to save user profile
+        [self.logger logMessage:[NSString stringWithFormat:OPTLYLoggerMessagesUserProfileAttemptToSaveVariation, experimentId, bucketedVariation.variationId, userId]
+                      withLevel:OptimizelyLogLevelDebug];
+        [self.userProfile saveUserId:userId
+                        experimentId:experimentId
+                         variationId:bucketedVariation.variationId];
+    }
     return bucketedVariation;
 }
 
-- (BOOL)isNullOrEmpty:(nullable NSString *)value {
-    return ((value == nil) || [value isKindOfClass: [NSNull class]] || [value isEqualToString:@""]);
+# pragma mark - Helper Methods
+// check if the user is in the whitelisted mapping
+- (BOOL)checkWhitelistingForUser:(NSString *)userId experiment:(OPTLYExperiment *)experiment {
+    if (experiment.forcedVariations[userId] != nil) {
+        return true;
+    }
+    return false;
+}
+
+// get the variation the user was whitelisted into
+- (OPTLYVariation *)getWhitelistedVariationForUser:(NSString *)userId experiment:(OPTLYExperiment *)experiment {
+    NSString *forcedVariationKey = experiment.forcedVariations[userId];
+    OPTLYVariation *forcedVariation = [experiment getVariationForVariationKey:forcedVariationKey];
+    if (forcedVariation != nil) {
+        // Log user forced into variation
+        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesForcedVariationUser, userId, forcedVariation.variationKey];
+        [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
+    }
+    else {
+        // Log error: variation not in datafile not activating user
+        [OPTLYErrorHandler handleError:self.errorHandler
+                                  code:OPTLYErrorTypesDataUnknown
+                           description:NSLocalizedString(OPTLYErrorHandlerMessagesVariationUnknown, variationId)];
+    }
+    return forcedVariation;
 }
 @end

@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol OPTLYDatafileManager, OPTLYErrorHandler, OPTLYEventDispatcher, OPTLYLogger, OPTLYUserProfileService;
+@protocol OPTLYDatafileManager, OPTLYErrorHandler, OPTLYEventDispatcher, OPTLYLogger, OPTLYUserProfile;
 @class OPTLYManagerBuilder;
 
 typedef void (^OPTLYManagerBuilderBlock)(OPTLYManagerBuilder * _Nullable builder);
@@ -28,9 +28,7 @@ typedef void (^OPTLYManagerBuilderBlock)(OPTLYManagerBuilder * _Nullable builder
 /// The dispatch interval for the event dispatcher.
 @property (nonatomic, readwrite) NSTimeInterval eventDispatchInterval;
 /// The ID of the Optimizely Project the manager will oversee
-@property (nonatomic, readwrite, strong, nullable) NSString *projectId;
-/// The ID of the Optimizely Project SDK key the manager will oversee
-@property (nonatomic, readwrite, strong, nullable) NSString *sdkKey;
+@property (nonatomic, readwrite, strong, nonnull) NSString *projectId;
 /// The datafile manager to be used for the manager
 @property (nonatomic, readwrite, strong, nonnull) id<OPTLYDatafileManager> datafileManager;
 /// The error handler to be used for the manager, client, and all subcomponents
@@ -40,11 +38,9 @@ typedef void (^OPTLYManagerBuilderBlock)(OPTLYManagerBuilder * _Nullable builder
 /// The logger to be used for the manager, client, and all subcomponents
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYLogger> logger;
 /// User profile to be used by the client to store user-specific data.
-@property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfileService> userProfileService;
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
 
-/// init is disabled. Please use builderWithBlock to create a Manager Builder
-- (nonnull instancetype)init NS_UNAVAILABLE;
-/// Create the Optimizely Manager Builder object.
+/// Create the Optimizely Manager object.
 + (nullable instancetype)builderWithBlock:(nonnull OPTLYManagerBuilderBlock)block;
 
 @end

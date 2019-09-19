@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016,2018, Optimizely, Inc. and contributors                        *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -18,22 +18,21 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 
 @protocol OPTLYEventAudience;
-@class OPTLYEventAudience;
 
 @protocol OPTLYEventDecisionTicket
 @end
 
-@interface OPTLYEventDecisionTicket : OPTLYJSONModel
+@interface OPTLYEventDecisionTicket : JSONModel
 
 // The audiences bucketed at decision time
-@property (nonatomic, strong, nullable) NSArray<OPTLYEventAudience *><OPTLYEventAudience, OPTLYOptional> *audiences;
+@property (nonatomic, strong, nullable) NSArray<OPTLYEventAudience, Optional> *audiences;
 // Id (UUID or visitorId) used for bucketing
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *bucketingId;
+@property (nonatomic, strong, nullable) NSString<Optional> *bucketingId;
 
 @end

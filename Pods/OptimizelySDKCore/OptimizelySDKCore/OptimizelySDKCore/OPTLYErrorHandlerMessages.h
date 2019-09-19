@@ -24,7 +24,6 @@
 extern NSString * const OPTLYErrorHandlerMessagesDomain;
 
 extern NSString * const OPTLYErrorHandlerMessagesDataFileInvalid;
-extern NSString * const OPTLYErrorHandlerMessagesDataFileVersionInvalid;
 extern NSString * const OPTLYErrorHandlerMessagesEventDispatcherInvalid;
 extern NSString * const OPTLYErrorHandlerMessagesLoggerInvalid;
 extern NSString * const OPTLYErrorHandlerMessagesErrorHandlerInvalid;
@@ -45,6 +44,7 @@ extern NSString * const OPTLYErrorHandlerMessagesBucketingIdInvalid;
 extern NSString * const OPTLYErrorHandlerMessagesTrafficAllocationUnknown;
 extern NSString * const OPTLYErrorHandlerMessagesEventDispatchFailed;
 extern NSString * const OPTLYErrorHandlerMessagesConfigInvalid;
+extern NSString * const OPTLYErrorHandlerMessagesLiveVariableKeyUnknown;
 
 extern NSString * const OPTLYErrorHandlerMessagesManagerBuilderInvalid;
 
@@ -54,7 +54,6 @@ extern NSString *const OPTLYErrorHandlerMessagesDataStoreInvalidDataStoreEntityV
 extern NSString *const OPTLYErrorHandlerMessagesHTTPRequestManagerPOSTRetryFailure;
 extern NSString *const OPTLYErrorHandlerMessagesHTTPRequestManagerGETRetryFailure;
 extern NSString *const OPTLYErrorHandlerMessagesHTTPRequestManagerGETIfModifiedFailure;
-extern NSString *const OPTLYErrorHandlerMessagesProjectConfigInvalidAudienceCondition;
 
 
 typedef NS_ENUM(NSUInteger, OPTLYErrorTypes) {

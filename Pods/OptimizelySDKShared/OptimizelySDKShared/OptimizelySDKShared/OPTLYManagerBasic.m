@@ -19,14 +19,12 @@
     #import "OPTLYLogger.h"
     #import "OPTLYLoggerMessages.h"
     #import "OPTLYNetworkService.h"
-    #import "OPTLYUserProfileServiceBasic.h"
 #else
     #import <OptimizelySDKCore/OPTLYErrorHandler.h>
     #import <OptimizelySDKCore/OPTLYEventDispatcherBasic.h>
     #import <OptimizelySDKCore/OPTLYLogger.h>
     #import <OptimizelySDKCore/OPTLYLoggerMessages.h>
     #import <OptimizelySDKCore/OPTLYNetworkService.h>
-    #import <OptimizelySDKCore/OPTLYUserProfileServiceBasic.h>
 #endif
 #import "OPTLYClient.h"
 #import "OPTLYDatafileManagerBasic.h"
@@ -86,10 +84,6 @@
         // --- project id ---
         self.projectId = builder.projectId;
         
-        self.sdkKey = builder.sdkKey;
-        
-        self.datafileConfig = [[OPTLYDatafileConfig alloc] initWithProjectId:self.projectId withSDKKey:self.sdkKey];
-        
         // --- datafile manager ---
         if (!builder.datafileManager) {
             // set default datafile manager if no datafile manager is set
@@ -107,10 +101,8 @@
         }
         
         // --- user profile ---
-        if (!builder.userProfileService) {
-            self.userProfileService = [[OPTLYUserProfileServiceNoOp alloc] init];
-        } else {
-            self.userProfileService = builder.userProfileService;
+        if (builder.userProfile) {
+            self.userProfile = builder.userProfile;
         }
         
     }

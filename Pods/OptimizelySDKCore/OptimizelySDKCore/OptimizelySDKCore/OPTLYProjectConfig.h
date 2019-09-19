@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2017-2019, Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -16,9 +16,9 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 #import "OPTLYProjectConfigBuilder.h"
 
@@ -26,15 +26,15 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString * const kExpectedDatafileVersion;
 NS_ASSUME_NONNULL_END
 
-@class OPTLYAttribute, OPTLYAudience, OPTLYBucketer, OPTLYEvent, OPTLYExperiment, OPTLYGroup, OPTLYUserProfileService, OPTLYVariation, OPTLYVariable, OPTLYFeatureFlag, OPTLYRollout;
-@protocol OPTLYAttribute, OPTLYAudience, OPTLYBucketer, OPTLYErrorHandler, OPTLYEvent, OPTLYExperiment, OPTLYGroup, OPTLYLogger, OPTLYVariable, OPTLYVariation, OPTLYFeatureFlag, OPTLYRollout;
+@class OPTLYAttribute, OPTLYAudience, OPTLYBucketer, OPTLYEvent, OPTLYExperiment, OPTLYGroup, OPTLYUserProfile, OPTLYVariation, OPTLYVariable;
+@protocol OPTLYAttribute, OPTLYAudience, OPTLYBucketer, OPTLYErrorHandler, OPTLYEvent, OPTLYExperiment, OPTLYGroup, OPTLYLogger, OPTLYVariable, OPTLYVariation;
 
 /*
     This class represents all the data contained in the project datafile 
     and includes helper methods to efficiently access its data.
  */
 
-@interface OPTLYProjectConfig : OPTLYJSONModel
+@interface OPTLYProjectConfig : JSONModel
 
 /// Account Id
 @property (nonatomic, strong, nonnull) NSString *accountId;
@@ -45,49 +45,36 @@ NS_ASSUME_NONNULL_END
 /// Datafile Revision number
 @property (nonatomic, strong, nonnull) NSString *revision;
 /// Flag for IP anonymization
-@property (nonatomic, strong, nonnull) NSNumber<OPTLYOptional> *anonymizeIP;
-/// Flag for Bot Filtering
-@property (nonatomic, strong, nonnull) NSNumber<OPTLYOptional> *botFiltering;
+@property (nonatomic, assign) BOOL anonymizeIP;
 /// List of Optimizely Experiment objects
-@property (nonatomic, strong, nonnull) NSArray<OPTLYExperiment *><OPTLYExperiment> *experiments;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYExperiment> *experiments;
 /// List of Optimizely Event Type objects
-@property (nonatomic, strong, nonnull) NSArray<OPTLYEvent *><OPTLYEvent> *events;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYEvent> *events;
 /// List of audience ids
-@property (nonatomic, strong, nonnull) NSArray<OPTLYAudience *><OPTLYAudience> *audiences;
-/// List of typed audience objects
-@property (nonatomic, strong, nullable) NSArray<OPTLYAudience *><OPTLYAudience, OPTLYOptional> *typedAudiences;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYAudience> *audiences;
 /// List of attributes objects
-@property (nonatomic, strong, nonnull) NSArray<OPTLYAttribute *><OPTLYAttribute> *attributes;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYAttribute> *attributes;
 /// List of group objects
-@property (nonatomic, strong, nonnull) NSArray<OPTLYGroup *><OPTLYGroup> *groups;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYGroup> *groups;
+/// List of live variable objects
+/// TODO: Make variables required
+@property (nonatomic, strong, nonnull) NSArray<OPTLYVariable, Optional> *variables;
 
 /// a comprehensive list of experiments that includes experiments being whitelisted (in Groups)
-@property (nonatomic, strong, nullable) NSArray<OPTLYExperiment *><OPTLYExperiment, OPTLYOptional> *allExperiments;
-@property (nonatomic, strong, nullable) id<OPTLYLogger, OPTLYIgnore> logger;
-@property (nonatomic, strong, nullable) id<OPTLYErrorHandler, OPTLYIgnore> errorHandler;
-@property (nonatomic, strong, readonly, nullable) id<OPTLYUserProfileService, OPTLYIgnore> userProfileService;
+@property (nonatomic, strong, nullable) NSArray<OPTLYExperiment, Ignore> *allExperiments;
+@property (nonatomic, strong, nullable) id<OPTLYLogger, Ignore> logger;
+@property (nonatomic, strong, nullable) id<OPTLYErrorHandler, Ignore> errorHandler;
+@property (nonatomic, strong, readonly, nullable) id<OPTLYUserProfile, Ignore> userProfile;
 
 /// Returns the client type (e.g., objective-c-sdk, ios-sdk, tvos-sdk)
-@property (nonatomic, strong, readonly, nonnull) NSString<OPTLYIgnore> *clientEngine;
+@property (nonatomic, strong, readonly, nonnull) NSString<Ignore> *clientEngine;
 /// Returns the client version number
-@property (nonatomic, strong, readonly, nonnull) NSString<OPTLYIgnore> *clientVersion;
-/// List of Optimizely Feature Flags objects
-@property (nonatomic, strong, nonnull) NSArray<OPTLYFeatureFlag *><OPTLYFeatureFlag, OPTLYOptional> *featureFlags;
-/// List of Optimizely Rollouts objects
-@property (nonatomic, strong, nonnull) NSArray<OPTLYRollout *><OPTLYRollout, OPTLYOptional> *rollouts;
+@property (nonatomic, strong, readonly, nonnull) NSString<Ignore> *clientVersion;
 
 /**
  * Initialize the Project Config from a builder block.
  */
-+ (nullable instancetype)init:(nonnull OPTLYProjectConfigBuilderBlock)builderBlock
-__attribute((deprecated("Use OPTLYProjectConfig initWithBuilder method instead.")));
-
-/**
- * Initialize the Project Config from a OPTLYProjectConfigBuilder object.
- * @param builder The OPTLYProjectConfigBuilder object, which has logger, errorHandler, and eventDispatcher to be set.
- * @return OPTLYProjectConfig instance.
- */
-- (nullable instancetype)initWithBuilder:(nonnull OPTLYProjectConfigBuilder *)builder;
++ (nullable instancetype)init:(nonnull OPTLYProjectConfigBuilderBlock)builderBlock;
 
 /**
  * Initialize the Project Config from a datafile.
@@ -110,24 +97,9 @@ __attribute((deprecated("Use OPTLYProjectConfig initWithBuilder method instead."
 - (nullable NSString *)getExperimentIdForKey:(nonnull NSString *)experimentKey;
 
 /**
- * Returns true if experiment belongs to any feature, false otherwise.
- **/
-- (BOOL)isFeatureExperiment:(nonnull NSString *)experimentId;
-
-/**
  * Get a Group object for an Id.
  */
 - (nullable OPTLYGroup *)getGroupForGroupId:(nonnull NSString *)groupId;
-
-/**
- * Get a Feature Flag object for a key.
- */
-- (nullable OPTLYFeatureFlag *)getFeatureFlagForKey:(nonnull NSString *)featureFlagKey;
-
-/**
- * Get a Rollout object for an Id.
- */
-- (nullable OPTLYRollout *)getRolloutForId:(nonnull NSString *)rolloutId;
 
 /**
  * Gets an event id for a corresponding event key
@@ -145,34 +117,21 @@ __attribute((deprecated("Use OPTLYProjectConfig initWithBuilder method instead."
 - (nullable OPTLYAttribute *)getAttributeForKey:(nonnull NSString *)attributeKey;
 
 /**
- * Get an attribute Id for a given key.
- **/
-- (nullable NSString *)getAttributeIdForKey:(nonnull NSString *)attributeKey;
-
-/**
  * Get an audience for a given audience id.
  */
 - (nullable OPTLYAudience *)getAudienceForId:(nonnull NSString *)audienceId;
 
 /**
- * Get forced variation for a given experiment key and user id.
+ * Get a variable for a given live variable key.
  */
-- (nullable OPTLYVariation *)getForcedVariation:(nonnull NSString *)experimentKey
-                                         userId:(nonnull NSString *)userId;
-
-/**
- * Set forced variation for a given experiment key and user id according to a given variation key.
- */
-- (BOOL)setForcedVariation:(nonnull NSString *)experimentKey
-                    userId:(nonnull NSString *)userId
-              variationKey:(nullable NSString *)variationKey;
+- (nullable OPTLYVariable *)getVariableForVariableKey:(nonnull NSString *)variableKey;
 
 /**
  * Get variation for experiment and user ID with user attributes.
  */
 - (nullable OPTLYVariation *)getVariationForExperiment:(nonnull NSString *)experimentKey
                                                 userId:(nonnull NSString *)userId
-                                            attributes:(nullable NSDictionary<NSString *, id> *)attributes
+                                            attributes:(nullable NSDictionary<NSString *,NSString *> *)attributes
                                               bucketer:(nullable id<OPTLYBucketer>)bucketer;
 
 @end

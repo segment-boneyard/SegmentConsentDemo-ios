@@ -1,3 +1,6 @@
 [submodule "Externals/analytics-ios"]
 	path = Externals/analytics-ios
 	url = git@github.com:segmentio/analytics-ios.git
+[submodule "Externals/segment-optimizely-x"]
+	path = Externals/segment-optimizely-x
+	url = git@github.com:segment-integrations/analytics-ios-integration-optimizely-x.git

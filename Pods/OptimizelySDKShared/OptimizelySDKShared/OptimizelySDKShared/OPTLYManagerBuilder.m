@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016-2017, Optimizely, Inc. and contributors                   *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -23,7 +23,6 @@
     #import <OptimizelySDKCore/OPTLYLogger.h>
 #endif
 
-#import "OPTLYManagerBase.h"
 #import "OPTLYManagerBuilder.h"
 #import "OPTLYDatafileManagerBasic.h"
 
@@ -33,17 +32,15 @@
     return [[self alloc] initWithBlock:block];
 }
 
+- (id)init {
+    return [self initWithBlock:nil];
+}
+
 - (id)initWithBlock:(OPTLYManagerBuilderBlock)block {
+    NSParameterAssert(block);
     self = [super init];
     if (self != nil) {
-        if (block != nil) {
-            block(self);
-        }
-        else {
-            [[OPTLYLoggerDefault new] logMessage:OPTLYLoggerMessagesManagerBuilderBlockNotValid
-                      withLevel:OptimizelyLogLevelError];
-            return nil;
-        }
+        block(self);
         
         // check the logger
         if (_logger) {
@@ -52,9 +49,6 @@
                           withLevel:OptimizelyLogLevelError];
                 return nil;
             }
-        }
-        else {
-            _logger = [OPTLYLoggerDefault new];
         }
         
         // check the error handler
@@ -85,12 +79,17 @@
         }
         
         // check the project id
-        if (![OPTLYDatafileConfig isValidKeyString:_projectId] && ![OPTLYDatafileConfig isValidKeyString:_sdkKey]) {
+        if (_projectId == nil) {
             [_logger logMessage:OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId
                       withLevel:OptimizelyLogLevelError];
             return nil;
         }
         
+        if ([_projectId isEqualToString:@""]) {
+            [_logger logMessage:OPTLYLoggerMessagesManagerProjectIdCannotBeEmptyString
+                      withLevel:OptimizelyLogLevelError];
+            return nil;
+        }
         
     }
     return self;

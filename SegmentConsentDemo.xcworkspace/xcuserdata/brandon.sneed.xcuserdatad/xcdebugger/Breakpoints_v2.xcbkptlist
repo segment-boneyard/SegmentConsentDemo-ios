@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SegmentConsentDemo/ConsentManager.swift"
-            timestampString = "590440372.774496"
+            timestampString = "590604775.4663351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "context(_:next:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SegmentConsentDemo/ConsentManager.swift"
-            timestampString = "590440372.7748801"
+            timestampString = "590604775.466408"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "modifyContext(context:integrations:)"
             landmarkType = "7">
             <Locations>
@@ -73,13 +73,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/Segment-Optimizely-X/Segment-Optimizely-X/Classes/SEGOptimizelyXIntegration.m"
-            timestampString = "590440372.775153"
+            filePath = "Pods/OptimizelySDKShared/OptimizelySDKShared/OptimizelySDKShared/OPTLYClient.m"
+            timestampString = "590603981.754047"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "-enqueueAction:"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "-track:userId:eventTags:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/OptimizelySDKCore/OptimizelySDKCore/OptimizelySDKCore/Optimizely.m"
+            timestampString = "590603997.0323631"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "-track:userId:eventTags:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,13 +105,45 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/Segment-Optimizely-X/Segment-Optimizely-X/Classes/SEGOptimizelyXIntegration.m"
-            timestampString = "590440372.775208"
+            filePath = "externals/analytics-ios/Analytics/Classes/Integrations/SEGIntegrationsManager.m"
+            timestampString = "590604098.241809"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "468"
+            endingLineNumber = "468"
+            landmarkName = "-invokeIntegration:key:selector:arguments:options:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "externals/segment-optimizely-x/Segment-Optimizely-X/Classes/SEGOptimizelyXIntegration.m"
+            timestampString = "590604155.595049"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "-track:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SegmentConsentDemo/OptimizelyBounce.m"
+            timestampString = "590604775.466601"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "-setupOptimizely"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

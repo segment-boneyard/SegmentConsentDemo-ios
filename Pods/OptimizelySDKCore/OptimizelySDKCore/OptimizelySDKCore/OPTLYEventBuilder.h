@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2019 Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -20,12 +20,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class OPTLYProjectConfig, OPTLYExperiment, OPTLYVariation, OPTLYEvent;
+@class OPTLYProjectConfig, OPTLYDecisionEventTicket, OPTLYEventTicket;
+@protocol OPTLYBucketer;
 
 // --- Event URLs ----
 NS_ASSUME_NONNULL_BEGIN
-extern NSString * const OptimizelyActivateEventKey;
-extern NSString * const OPTLYEventBuilderEventsTicketURL;
+extern NSString * const OPTLYEventBuilderDecisionTicketEventURL;
+extern NSString * const OPTLYEventBuilderEventTicketURL;
 NS_ASSUME_NONNULL_END
 
 @protocol OPTLYEventBuilder <NSObject>
@@ -33,44 +34,39 @@ NS_ASSUME_NONNULL_END
 /**
  * Create the parameters for an impression event.
  *
+ * @param config The project config object.
  * @param userId The ID of the user.
- * @param experiment The experiment.
- * @param variation The variation.
+ * @param experimentKey The experiment name.
+ * @param variationId The variation ID.
  * @param attributes A map of attribute names to current user attribute values.
  * @return A map of parameters for an impression event. This value can be nil.
  *
  */
-- (nullable NSDictionary *)buildImpressionEventForUser:(nonnull NSString *)userId
-                                            experiment:(nonnull OPTLYExperiment *)experiment
-                                             variation:(nonnull OPTLYVariation *)variation
-                                            attributes:(nullable NSDictionary<NSString *, id> *)attributes;
-   
+- (nullable NSDictionary *)buildDecisionEventTicket:(nonnull OPTLYProjectConfig *)config
+                                             userId:(nonnull NSString *)userId
+                                      experimentKey:(nonnull NSString *)experimentKey
+                                        variationId:(nonnull NSString *)variationId
+                                         attributes:(nullable NSDictionary<NSString *, NSString *> *)attributes;
+
 /**
  * Create the parameters for a conversion event.
  *
+ * @param config The project config object.
  * @param userId The ID of the user.
- * @param event The event name.
+ * @param eventName The event name.
  * @param eventTags A map of event tag names to event tag values (NSString or NSNumber containing float, double, integer, or boolean).
  * @param attributes A map of attribute names to current user attribute values.
  * @return A map of parameters for a conversion event. This value can be nil.
  *
  */
-- (nullable NSDictionary *)buildConversionEventForUser:(nonnull NSString *)userId
-                                                 event:(nonnull OPTLYEvent *)event
-                                             eventTags:(nullable NSDictionary *)eventTags
-                                            attributes:(nullable NSDictionary<NSString *, id> *)attributes;
+- (nullable NSDictionary *)buildEventTicket:(nonnull OPTLYProjectConfig *)config
+                                   bucketer:(nonnull id<OPTLYBucketer>)bucketer
+                                     userId:(nonnull NSString *)userId
+                                  eventName:(nonnull NSString *)eventName
+                                  eventTags:(nullable NSDictionary *)eventTags
+                                 attributes:(nullable NSDictionary<NSString *, NSString *> *)attributes;
 @end
 
 @interface OPTLYEventBuilderDefault : NSObject<OPTLYEventBuilder>
-
-/// init is disabled. Please use initWithConfig to create an Event Builder
-- (nonnull instancetype)init NS_UNAVAILABLE;
-
-/**
- * Initialize the default event build with the project config.
- * @param config The project config that the event builder will use for event building.
- * @return The event builder that has been created.
- */
-- (nullable instancetype)initWithConfig:(nonnull OPTLYProjectConfig *)config;
 
 @end

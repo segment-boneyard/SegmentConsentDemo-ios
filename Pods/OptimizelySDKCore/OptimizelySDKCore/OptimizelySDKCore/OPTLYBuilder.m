@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2017-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -21,8 +21,6 @@
 #import "OPTLYEventDispatcherBasic.h"
 #import "OPTLYLogger.h"
 #import "OPTLYProjectConfig.h"
-#import "OPTLYDecisionService.h"
-#import "OPTLYNotificationCenter.h"
 
 @implementation OPTLYBuilder
 
@@ -50,14 +48,14 @@
         return nil;
     }
     
-    _config = [[OPTLYProjectConfig alloc] initWithBuilder:[OPTLYProjectConfigBuilder builderWithBlock:^(OPTLYProjectConfigBuilder * _Nullable builder) {
+    _config = [OPTLYProjectConfig init:^(OPTLYProjectConfigBuilder * _Nullable builder) {
         builder.datafile = self.datafile;
         builder.logger = self.logger;
-        builder.userProfileService = self.userProfileService;
+        builder.userProfile = self.userProfile;
         builder.errorHandler = self.errorHandler;
         builder.clientEngine = self.clientEngine;
         builder.clientVersion = self.clientVersion;
-    }]];
+    }];
     
     if (_config == nil) {
         NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
@@ -73,9 +71,7 @@
     }
     
     _bucketer = [[OPTLYBucketer alloc] initWithConfig:_config];
-    _decisionService = [[OPTLYDecisionService alloc] initWithProjectConfig:_config bucketer:_bucketer];
-    _eventBuilder = [[OPTLYEventBuilderDefault alloc] initWithConfig:_config];
-    _notificationCenter = [[OPTLYNotificationCenter alloc] initWithProjectConfig:_config];
+    _eventBuilder = [[OPTLYEventBuilderDefault alloc] init];
     
     return self;
 }

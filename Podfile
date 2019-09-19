@@ -7,5 +7,5 @@ target 'SegmentConsentDemo' do
 
   # Pods for SegmentConsentDemo
   pod 'Analytics', :path => './externals/analytics-ios'
-  pod "Segment-Optimizely-X", '1.0.3-beta'
+  pod "Segment-Optimizely-X", :path => './externals/segment-optimizely-x'
 end

@@ -22,14 +22,14 @@ static const NSInteger kMaxTrafficAllocationValue = 10000;
 
 @implementation OPTLYTrafficAllocation
 
-- (BOOL)validate:(NSError * __autoreleasing *)error {
+- (BOOL)validate:(NSError **)error {
     BOOL valid = [super validate:error];
     
     if ((self.endOfRange > kMaxTrafficAllocationValue) ||
         (self.endOfRange < kMinTrafficAllocationValue))
     {
         if (*error != nil) {
-            *error = [OPTLYJSONModelError errorWithDomain:OPTLYErrorHandlerMessagesDomain
+            *error = [JSONModelError errorWithDomain:OPTLYErrorHandlerMessagesDomain
                                                 code:OPTLYErrorTypesDatafileInvalid
                                             userInfo:@{NSLocalizedDescriptionKey :
                                                            [NSString stringWithFormat:NSLocalizedString(OPTLYErrorHandlerMessagesTrafficAllocationNotInRange, nil), self.endOfRange]}];

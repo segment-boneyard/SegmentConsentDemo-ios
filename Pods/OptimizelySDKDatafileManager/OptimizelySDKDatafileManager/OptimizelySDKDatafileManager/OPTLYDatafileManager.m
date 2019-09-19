@@ -41,17 +41,17 @@ NSTimeInterval const kDefaultDatafileFetchInterval_s = 120;
 
 @implementation OPTLYDatafileManagerDefault
 
-+ (nullable instancetype)init:(OPTLYDatafileManagerBuilderBlock)builderBlock {
++ (nullable instancetype)init:(nonnull OPTLYDatafileManagerBuilderBlock)builderBlock {
     return [[self alloc] initWithBuilder:[OPTLYDatafileManagerBuilder builderWithBlock:builderBlock]];
 }
 
-- (nullable instancetype)initWithBuilder:(OPTLYDatafileManagerBuilder *)builder {
+- (instancetype)initWithBuilder:(OPTLYDatafileManagerBuilder *)builder {
     if (builder != nil) {
         self = [super init];
         if (self != nil) {
             _datafileFetchInterval = kDefaultDatafileFetchInterval_s;
             _datafileFetchInterval = builder.datafileFetchInterval;
-            _datafileConfig = builder.datafileConfig;
+            _projectId = builder.projectId;
             _errorHandler = builder.errorHandler;
             _logger = builder.logger;
             _networkService = [OPTLYNetworkService new];
@@ -59,7 +59,7 @@ NSTimeInterval const kDefaultDatafileFetchInterval_s = 120;
             _dataStore.logger = _logger;
             
             // download datafile when we start the datafile manager
-            [self downloadDatafile:self.datafileConfig completionHandler:nil];
+            [self downloadDatafile:self.projectId completionHandler:nil];
             [self setupNetworkTimer];
             [self setupApplicationNotificationHandlers];
         }
@@ -70,18 +70,18 @@ NSTimeInterval const kDefaultDatafileFetchInterval_s = 120;
     }
 }
 
-- (void)downloadDatafile:(OPTLYDatafileConfig *)datafileConfig completionHandler:(OPTLYHTTPRequestManagerResponse)completion {
-    NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileDownloading, [datafileConfig key] ];
+- (void)downloadDatafile:(NSString *)projectId completionHandler:(OPTLYHTTPRequestManagerResponse)completion {
+    NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileDownloading, projectId];
     [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
     
-    NSString *lastSavedModifiedDate = [self getLastModifiedDate:[datafileConfig key]];
+    NSString *lastSavedModifiedDate = [self getLastModifiedDate:projectId];
     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerLastModifiedDate, lastSavedModifiedDate];
     [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
     
     // if datafile polling is enabled, then no need for the backoff retry
     BOOL enableBackoffRetry = self.datafileFetchInterval > 0 ? NO : YES;
     
-    [self.networkService downloadProjectConfig:[datafileConfig URLForKey]
+    [self.networkService downloadProjectConfig:self.projectId
                                   backoffRetry:enableBackoffRetry
                                   lastModified:lastSavedModifiedDate
                              completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -90,8 +90,6 @@ NSTimeInterval const kDefaultDatafileFetchInterval_s = 120;
                                  NSString *logMessage = @"";
                                  if (error != nil) {
                                      [self.errorHandler handleError:error];
-                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError, [datafileConfig key], error];
-                                     [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
                                  }
                                  else if (statusCode == 200) { // got datafile OK
                                      [self saveDatafile:data];
@@ -99,20 +97,23 @@ NSTimeInterval const kDefaultDatafileFetchInterval_s = 120;
                                      // save the last modified date
                                      NSDictionary *dictionary = [httpResponse allHeaderFields];
                                      NSString *lastModifiedDate = [dictionary valueForKey:@"Last-Modified"];
-                                     [self saveLastModifiedDate:lastModifiedDate project:[datafileConfig key]];
+                                     [self saveLastModifiedDate:lastModifiedDate project:projectId];
                                      
-                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileDownloaded, [datafileConfig key], lastModifiedDate];
+                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileDownloaded, projectId, lastModifiedDate];
                                      [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
                                  }
                                  else if (statusCode == 304) {
-                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedNoChanges, [datafileConfig key]];
+                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedNoChanges, projectId];
                                      [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
                                  }
-                                 else { // no error, but invalid status code
-                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedInvalidStatusCode, [datafileConfig key], statusCode];
+                                 else {
+                                     // TODO: Josh W. handle bad response
+                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError, projectId, error];
                                      [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
                                  }
-                     
+                                 
+                                 
+                                 
                                  // call the completion handler
                                  if (completion != nil) {
                                      completion(data, response, error);
@@ -121,45 +122,46 @@ NSTimeInterval const kDefaultDatafileFetchInterval_s = 120;
 }
 
 - (void)downloadDatafile {
-    [self downloadDatafile:self.datafileConfig completionHandler:nil];
+    [self downloadDatafile:self.projectId completionHandler:nil];
 }
 
 - (void)saveDatafile:(NSData *)datafile {
     NSError *error;
-    [self.dataStore saveFile:[self.datafileConfig key]
+    [self.dataStore saveFile:self.projectId
                         data:datafile
                         type:OPTLYDataStoreDataTypeDatafile
                        error:&error];
     if (error != nil) {
         [self.errorHandler handleError:error];
     } else {
-        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileSaved, [self.datafileConfig key]];
+        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileSaved, self.projectId];
         [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
     }
 }
 
-- (NSData * _Nullable)getSavedDatafile:(out NSError * _Nullable __autoreleasing * _Nullable)error NS_SWIFT_NOTHROW {
-    NSData *datafile = [self.dataStore getFile:[self.datafileConfig key]
-                                          type:OPTLYDataStoreDataTypeDatafile
-                                         error:error];
-    if (error && *error) {
-        [self.errorHandler handleError:*error];
+- (NSData *)getSavedDatafile {
+    NSError *error;
+    NSData *datafile = [self.dataStore getFile:self.projectId
+                       type:OPTLYDataStoreDataTypeDatafile
+                      error:&error];
+    if (error != nil) {
+        [self.errorHandler handleError:error];
     }
     return datafile;
 }
 
 - (BOOL)isDatafileCached {
-    BOOL isCached = [self.dataStore fileExists:[self.datafileConfig key] type:OPTLYDataStoreDataTypeDatafile];
+    BOOL isCached = [self.dataStore fileExists:self.projectId type:OPTLYDataStoreDataTypeDatafile];
     return isCached;
 }
 
 # pragma mark - Persistence for Last Modified Date
 - (void)saveLastModifiedDate:(nonnull NSString *)lastModifiedDate
-                     project:(nonnull NSString *)projectKey {
+                     project:(nonnull NSString *)projectId {
     
     NSDictionary *userProfileData = [self.dataStore getUserDataForType:OPTLYDataStoreDataTypeDatafile];
     NSMutableDictionary *userProfileDataMutable = userProfileData ? [userProfileData mutableCopy] : [NSMutableDictionary new];
-    userProfileDataMutable[projectKey] = lastModifiedDate;
+    userProfileDataMutable[projectId] = lastModifiedDate;
     [self.dataStore saveUserData:userProfileDataMutable
                             type:OPTLYDataStoreDataTypeDatafile];
 }

@@ -18,9 +18,9 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
@@ -30,14 +30,14 @@ NS_ASSUME_NONNULL_END
 @protocol OPTLYEventFeature
 @end
 
-@interface OPTLYEventFeature : OPTLYJSONModel
+@interface OPTLYEventFeature : JSONModel
 
 // The ID of feature for non-custom features. Should be the GAE ID if it exists.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *featureId;
+@property (nonatomic, strong, nullable) NSString<Optional> *featureId;
 // The name of the feature, which along with type uniquely identify the feature.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *name;
+@property (nonatomic, strong, nullable) NSString<Optional> *name;
 // The type the feature, which along with name uniquely identifies the feature.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *type;
+@property (nonatomic, strong, nullable) NSString<Optional> *type;
 // The value of the feature (supports: string, long, int, double, float, boolean)
 @property (nonatomic, strong, nonnull) id value;
 // If true, this feature will be indexed in the counting service. Otherwise it will just be logged

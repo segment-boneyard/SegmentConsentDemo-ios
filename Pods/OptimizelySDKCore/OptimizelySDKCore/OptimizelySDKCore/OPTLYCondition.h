@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016,2018-2019, Optimizely, Inc. and contributors              *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -15,42 +15,36 @@
  ***************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import "OPTLYProjectConfig.h"
 
 @protocol OPTLYCondition
 
 /**
  * Evaluate the condition against the user attributes.
  */
-- (nullable NSNumber *)evaluateConditionsWithAttributes:(nullable NSDictionary<NSString *, id> *)attributes projectConfig:(nullable OPTLYProjectConfig *)config;
+- (BOOL)evaluateConditionsWithAttributes:(NSDictionary<NSString *, NSString *> *)attributes;
 
 @end
 
 @interface OPTLYCondition : NSObject
 
-+ (nullable NSArray<OPTLYCondition *><OPTLYCondition> *)deserializeJSON:(nullable id)json
-                                                                  error:(NSError *_Nullable __autoreleasing *_Nullable)error;
-+ (nullable NSArray<OPTLYCondition *><OPTLYCondition> *)deserializeJSON:(nullable id)json;
-+ (nullable NSArray<OPTLYCondition *><OPTLYCondition> *)deserializeAudienceConditionsJSONArray:(nullable NSArray *)jsonArray
-                                                                                         error:(NSError *_Nullable __autoreleasing *_Nullable)error;
-+ (nullable NSArray<OPTLYCondition *><OPTLYCondition> *)deserializeAudienceConditionsJSONArray:(nullable NSArray *)jsonArray;
++ (NSArray<OPTLYCondition> *)deserializeJSONArray:(NSArray *)jsonArray;
 
 @end
 
 @interface OPTLYAndCondition : NSObject <OPTLYCondition>
 
-@property (nonatomic, strong) NSArray<OPTLYCondition *><OPTLYCondition> *_Nullable subConditions;
+@property (nonatomic, strong) NSArray<OPTLYCondition> *subConditions;
 
 @end
 
 @interface OPTLYOrCondition : NSObject <OPTLYCondition>
 
-@property (nonatomic, strong) NSArray<OPTLYCondition *><OPTLYCondition> *_Nullable subConditions;
+@property (nonatomic, strong) NSArray<OPTLYCondition> *subConditions;
 
 @end
 
 @interface OPTLYNotCondition : NSObject <OPTLYCondition>
 
-@property (nonatomic, strong) NSObject<OPTLYCondition> *_Nullable subCondition;
+@property (nonatomic, strong) NSObject<OPTLYCondition> *subCondition;
 
 @end

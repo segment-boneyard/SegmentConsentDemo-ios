@@ -34,7 +34,7 @@
 @implementation OPTLYEventDataStoreiOS
 
 - (nullable instancetype)initWithBaseDir:(nonnull NSString *)baseDir
-                                   error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                                   error:(NSError * _Nullable * _Nullable)error
 {
     self = [super init];
     if (self)
@@ -52,21 +52,21 @@
 }
 
 - (BOOL)createTable:(NSString *)eventTypeName
-              error:(NSError * _Nullable __autoreleasing * _Nullable)error
+              error:(NSError * _Nullable * _Nullable)error
 {
     return [self.database createTable:eventTypeName error:error];
 }
 
 - (BOOL)saveEvent:(nonnull NSDictionary *)data
         eventType:(nonnull NSString *)eventTypeName
-            error:(NSError * _Nullable __autoreleasing * _Nullable)error
+            error:(NSError * _Nullable * _Nullable)error
 {
      return [self.database saveEvent:data table:eventTypeName error:error];
 }
 
 - (nullable NSArray *)getFirstNEvents:(NSInteger)numberOfEvents
                             eventType:(nonnull NSString *)eventTypeName
-                                error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                                error:(NSError * _Nullable * _Nullable)error
 {
     NSMutableArray *firstNEvents = [NSMutableArray new];
     
@@ -74,27 +74,17 @@
     for (OPTLYDatabaseEntity *entity in firstNEntities) {
         NSString *entityValue = entity.entityValue;
         NSDictionary *event = [NSJSONSerialization JSONObjectWithData:[entityValue dataUsingEncoding:NSUTF8StringEncoding] options:0 error:error];
-        
-        if ([event count] > 0) {
-            if ((error != nil && *error == nil) || error == nil) {
-                [firstNEvents addObject:@{@"entityId": entity.entityId, @"json": event}];
-            }
+        if (*error == nil && [event count] > 0) {
+            [firstNEvents addObject:event];
         }
     }
     
     return [firstNEvents copy];
 }
 
-- (NSInteger)getLastEventId:(nonnull NSString *)eventTypeName
-                      error:(NSError * _Nullable __autoreleasing * _Nullable)error
-{
-    NSInteger lastRowId = [self.database retrieveLastEntryId:eventTypeName error:error];
-    return lastRowId;
-}
-
 - (BOOL)removeFirstNEvents:(NSInteger)numberOfEvents
                  eventType:(nonnull NSString *)eventTypeName
-                     error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                     error:(NSError * _Nullable * _Nullable)error
 {
     BOOL ok = YES;
     NSArray *firstNEvents = [self.database retrieveFirstNEntries:numberOfEvents table:eventTypeName error:error];
@@ -132,18 +122,15 @@
 
 - (BOOL)removeEvent:(nonnull NSDictionary *)event
           eventType:(nonnull NSString *)eventTypeName
-              error:(NSError * _Nullable __autoreleasing * _Nullable)error
+              error:(NSError * _Nullable * _Nullable)error
 {
-    BOOL retval = false;
-    
-    if (event[@"entityId"] != nil) {
-        retval = [self.database deleteEntity:event[@"entityId"] table:eventTypeName error:error];
-    }
-    return retval;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:event options:NSJSONWritingPrettyPrinted error:error];
+    NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    return [self.database deleteEntityWithJSON:json table:eventTypeName error:error];
 }
 
 - (NSInteger)numberOfEvents:(NSString *)eventTypeName
-                      error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                      error:(NSError * _Nullable * _Nullable)error
 {
     NSInteger numberOfEvents = [self.database numberOfRows:eventTypeName error:error];
     return numberOfEvents;
@@ -167,7 +154,7 @@
 @implementation OPTLYEventDataStoreTVOS
 
 - (nullable instancetype)initWithBaseDir:(nonnull NSString *)baseDir
-                                   error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                                   error:(NSError * _Nullable * _Nullable)error
 {
     self = [super init];
     if (self)
@@ -192,7 +179,7 @@ dispatch_queue_t eventsStorageCacheQueue()
 
 - (BOOL)saveEvent:(nonnull NSDictionary *)data
         eventType:(nonnull NSString *)eventTypeName
-            error:(NSError * _Nullable __autoreleasing * _Nullable)error
+            error:(NSError * _Nullable * _Nullable)error
 {
     dispatch_async(eventsStorageCacheQueue(), ^{
         __weak typeof(self) weakSelf = self;
@@ -204,7 +191,7 @@ dispatch_queue_t eventsStorageCacheQueue()
 
 - (nullable NSArray *)getFirstNEvents:(NSInteger)numberOfEvents
                             eventType:(nonnull NSString *)eventTypeName
-                                error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                                error:(NSError * _Nullable * _Nullable)error
 {
     __block OPTLYQueue *queue = nil;
     dispatch_sync(eventsStorageCacheQueue(), ^{
@@ -212,31 +199,13 @@ dispatch_queue_t eventsStorageCacheQueue()
         queue = [weakSelf.eventsCache objectForKey:eventTypeName];
     });
     
-    NSArray *firstNEntities = [queue firstNItems:numberOfEvents];
-    NSMutableArray *firstNEvents = [NSMutableArray new];
-    for (NSDictionary *entity in firstNEntities) {
-        if ([entity count] > 0) {
-            [firstNEvents addObject:@{@"entityId": @([firstNEntities indexOfObject:entity]) , @"json": entity}];
-        }
-    }
+    NSArray *firstNEvents = [queue firstNItems:numberOfEvents];
     return firstNEvents;
-}
-
-- (NSInteger)getLastEventId:(nonnull NSString *)eventTypeName
-                      error:(NSError * _Nullable __autoreleasing * _Nullable)error
-{
-    __block OPTLYQueue *queue = nil;
-    dispatch_sync(eventsStorageCacheQueue(), ^{
-        __weak typeof(self) weakSelf = self;
-        queue = [weakSelf.eventsCache objectForKey:eventTypeName];
-    });
-    
-    return [queue lastItemIndex];
 }
 
 - (BOOL)removeFirstNEvents:(NSInteger)numberOfEvents
                  eventType:(nonnull NSString *)eventTypeName
-                     error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                     error:(NSError * _Nullable * _Nullable)error
 {
     dispatch_async(eventsStorageCacheQueue(), ^{
         __weak typeof(self) weakSelf = self;
@@ -248,26 +217,18 @@ dispatch_queue_t eventsStorageCacheQueue()
 
 - (BOOL)removeEvent:(nonnull NSDictionary *)event
           eventType:(nonnull NSString *)eventTypeName
-              error:(NSError * _Nullable __autoreleasing * _Nullable)error
+              error:(NSError * _Nullable * _Nullable)error
 {
-    BOOL retval = NO;
-    
-    if (event[@"entityId"] != nil) {
-        dispatch_async(eventsStorageCacheQueue(), ^{
-            __weak typeof(self) weakSelf = self;
-            OPTLYQueue *queue = [weakSelf.eventsCache objectForKey:eventTypeName];
-            if (queue && [queue.queue count] > [event[@"entityId"] integerValue]) {
-                NSDictionary *eventJSON = [queue.queue objectAtIndex:[event[@"entityId"] integerValue]];
-                [queue removeItem:eventJSON];
-            }
-        });
-        retval = YES;
-    }
-    return retval;
+    dispatch_async(eventsStorageCacheQueue(), ^{
+        __weak typeof(self) weakSelf = self;
+        OPTLYQueue *queue = [weakSelf.eventsCache objectForKey:eventTypeName];
+        [queue removeItem:event];
+    });
+    return YES;
 }
 
 - (NSInteger)numberOfEvents:(nonnull NSString *)eventTypeName
-                      error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                      error:(NSError * _Nullable * _Nullable)error
 {
     __block OPTLYQueue *queue = nil;
     dispatch_sync(eventsStorageCacheQueue(), ^{

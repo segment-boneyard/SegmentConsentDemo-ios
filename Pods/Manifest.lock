@@ -1,50 +1,82 @@
 PODS:
   - Analytics (3.8.0-beta.0)
-  - OptimizelySDKCore (3.1.3)
-  - OptimizelySDKDatafileManager (3.1.3):
-    - OptimizelySDKShared (= 3.1.3)
-  - OptimizelySDKEventDispatcher (3.1.3):
-    - OptimizelySDKShared (= 3.1.3)
-  - OptimizelySDKiOS (3.1.3):
-    - OptimizelySDKDatafileManager (= 3.1.3)
-    - OptimizelySDKEventDispatcher (= 3.1.3)
-    - OptimizelySDKUserProfileService (= 3.1.3)
-  - OptimizelySDKShared (3.1.3):
-    - OptimizelySDKCore (= 3.1.3)
-  - OptimizelySDKUserProfileService (3.1.3):
-    - OptimizelySDKShared (= 3.1.3)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - JSONModel (1.3.0)
+  - OptimizelySDKCore (1.1.9):
+    - OptimizelySDKCore/JSONModel (= 1.1.9)
+  - OptimizelySDKCore/JSONModel (1.1.9):
+    - JSONModel (= 1.3.0)
+  - OptimizelySDKDatafileManager (1.1.9):
+    - OptimizelySDKDatafileManager/JSONModel (= 1.1.9)
+    - OptimizelySDKShared (= 1.1.9)
+  - OptimizelySDKDatafileManager/JSONModel (1.1.9):
+    - JSONModel (= 1.3.0)
+    - OptimizelySDKShared (= 1.1.9)
+  - OptimizelySDKEventDispatcher (1.1.9):
+    - OptimizelySDKEventDispatcher/JSONModel (= 1.1.9)
+    - OptimizelySDKShared (= 1.1.9)
+  - OptimizelySDKEventDispatcher/JSONModel (1.1.9):
+    - JSONModel (= 1.3.0)
+    - OptimizelySDKShared (= 1.1.9)
+  - OptimizelySDKiOS (1.1.9):
+    - OptimizelySDKDatafileManager (= 1.1.9)
+    - OptimizelySDKEventDispatcher (= 1.1.9)
+    - OptimizelySDKiOS/JSONModel (= 1.1.9)
+    - OptimizelySDKUserProfile (= 1.1.9)
+  - OptimizelySDKiOS/JSONModel (1.1.9):
+    - JSONModel (= 1.3.0)
+    - OptimizelySDKDatafileManager (= 1.1.9)
+    - OptimizelySDKEventDispatcher (= 1.1.9)
+    - OptimizelySDKUserProfile (= 1.1.9)
+  - OptimizelySDKShared (1.1.9):
+    - FMDB (= 2.6.2)
+    - JSONModel (= 1.3.0)
+    - OptimizelySDKCore (= 1.1.9)
+  - OptimizelySDKUserProfile (1.1.9):
+    - OptimizelySDKShared (= 1.1.9)
+    - OptimizelySDKUserProfile/JSONModel (= 1.1.9)
+  - OptimizelySDKUserProfile/JSONModel (1.1.9):
+    - JSONModel (= 1.3.0)
+    - OptimizelySDKShared (= 1.1.9)
   - Segment-Optimizely-X (1.0.3-beta):
     - Analytics (~> 3.0)
-    - OptimizelySDKiOS
+    - OptimizelySDKiOS (= 1.1.9)
 
 DEPENDENCIES:
   - Analytics (from `./externals/analytics-ios`)
-  - Segment-Optimizely-X (= 1.0.3-beta)
+  - Segment-Optimizely-X (from `./externals/segment-optimizely-x`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - FMDB
+    - JSONModel
     - OptimizelySDKCore
     - OptimizelySDKDatafileManager
     - OptimizelySDKEventDispatcher
     - OptimizelySDKiOS
     - OptimizelySDKShared
-    - OptimizelySDKUserProfileService
-    - Segment-Optimizely-X
+    - OptimizelySDKUserProfile
 
 EXTERNAL SOURCES:
   Analytics:
     :path: "./externals/analytics-ios"
+  Segment-Optimizely-X:
+    :path: "./externals/segment-optimizely-x"
 
 SPEC CHECKSUMS:
   Analytics: ee0475956b5c3689e2c7f15de501f87d0f8b12a1
-  OptimizelySDKCore: 3f6018cc222b23de13ae9a71c2c15cd7fa397aed
-  OptimizelySDKDatafileManager: 34edeb189ef170992677149460172ef44bfa7250
-  OptimizelySDKEventDispatcher: 081f55ea7cea340c8785c360734a132e889ed257
-  OptimizelySDKiOS: b40202fc2aa6bc49ccc36edd9e3c04aae113683d
-  OptimizelySDKShared: e92e0d7ae787097bc146899ea24415b82e0a3e64
-  OptimizelySDKUserProfileService: 5f4bd743a15dc10ba53eddf41b87321a60cbda00
-  Segment-Optimizely-X: c5f3cd13a50af2b138c320cf9c68e656432f4789
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  JSONModel: 81c06ecf99190a25fa6aafceea5faffa7880868a
+  OptimizelySDKCore: 4a6c2edca90e04e639b0108ef21601e08c40cfa6
+  OptimizelySDKDatafileManager: b66020b42dcca954a4ec2551c7f6a73ca7035823
+  OptimizelySDKEventDispatcher: f0ebefa16a6a5834fed562ab427db5fd4ebc5a6f
+  OptimizelySDKiOS: 060e24ddacb77e0bb45548863602816c3654cfc9
+  OptimizelySDKShared: 2c981d2d88cc79296a314293f770fa5032f8bff8
+  OptimizelySDKUserProfile: 20027486f6549934c479fd4b704c5c1195c8355b
+  Segment-Optimizely-X: 367abc9188de76436abbed1ddbd75fc4231e5c0c
 
-PODFILE CHECKSUM: f7d8d128842f80ca9b8a13397ecde14005d24d39
+PODFILE CHECKSUM: b4d6c8bdc85d5780a12ae4205da648c3293d6cfb
 
 COCOAPODS: 1.7.2

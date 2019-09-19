@@ -39,7 +39,7 @@
 - (BOOL)saveFile:(nonnull NSString *)fileName
             data:(nonnull NSData *)data
           subDir:(nullable NSString *)subDir
-           error:(NSError * _Nullable __autoreleasing * _Nullable)error
+           error:(NSError * _Nullable * _Nullable)error
 {
     BOOL ok = YES;
     NSString *fileDir = [self.baseDir stringByAppendingPathComponent:subDir];
@@ -48,27 +48,14 @@
     if (![fileManager fileExistsAtPath:fileDir isDirectory:nil]) {
         ok = [fileManager createDirectoryAtPath:fileDir withIntermediateDirectories:YES attributes:nil error:error];
     }
-    if (ok) {
-        // NSDataWritingAtomic
-        // A hint to write data to an auxiliary file first and then exchange the files.
-        // https://developer.apple.com/documentation/foundation/nsdatawritingoptions/nsdatawritingatomic?language=objc
-        // NSDataWritingFileProtectionCompleteUnlessOpen
-        // In this case, the file cannot be opened for reading or writing
-        // when the device is locked, although new files can be created with
-        // this class. If one of these files is open when the device is locked,
-        // reading and writing are still allowed.
-        // https://developer.apple.com/documentation/foundation/nsdatawritingoptions/nsdatawritingfileprotectioncompleteunlessopen?language=objc
-        ok = [data writeToFile:filePath
-                       options:NSDataWritingAtomic|NSDataWritingFileProtectionCompleteUnlessOpen
-                         error:error];
-    }
+    [fileManager createFileAtPath:filePath contents:data attributes:nil];
     return ok;
 }
 
 
 - (nullable NSData *)getFile:(nonnull NSString *)fileName
                       subDir:(nullable NSString *)subDir
-                       error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                       error:(NSError * _Nullable * _Nullable)error
 {
     NSString *filePath = [self filePathFor:fileName subDir:subDir];
     NSData *fileData = [NSData dataWithContentsOfFile:filePath options:0 error:error];
@@ -96,7 +83,7 @@
 
 - (BOOL)removeFile:(nonnull NSString *)fileName
             subDir:(nullable NSString *)subDir
-             error:(NSError * _Nullable __autoreleasing * _Nullable)error
+             error:(NSError * _Nullable * _Nullable)error
 {
     NSString *filePath = [self filePathFor:fileName subDir:subDir];
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -104,14 +91,14 @@
 }
 
 - (BOOL)removeDataSubDir:(nullable NSString *)subDir
-                   error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                   error:(NSError * _Nullable * _Nullable)error
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *fileDir = [self.baseDir stringByAppendingPathComponent:subDir];
     return [fileManager removeItemAtPath:fileDir error:error];
 }
 
-- (BOOL)removeAllFiles:(NSError * _Nullable __autoreleasing * _Nullable)error
+- (BOOL)removeAllFiles:(NSError * _Nullable * _Nullable)error
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     return [fileManager removeItemAtPath:self.baseDir error:error];

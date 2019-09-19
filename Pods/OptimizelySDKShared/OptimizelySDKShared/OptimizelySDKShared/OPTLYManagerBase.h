@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016-2017, Optimizely, Inc. and contributors                   *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -16,16 +16,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * _Nonnull const OptimizelyAppVersionKey;
-extern NSString * _Nonnull const OptimizelyDeviceModelKey;
-extern NSString * _Nonnull const OptimizelyOSVersionKey;
-extern NSString * _Nonnull const OptimizelySDKVersionKey;
-
-extern NSString * _Nonnull const OptimizelyBundleDatafilePrefix;
-extern NSString * _Nonnull const OptimizelyBundleDatafileFileTypeExtension;
-
-@class OPTLYClient, OPTLYDatafileConfig, OPTLYManagerBuilder;
-@protocol OPTLYDatafileManager, OPTLYErrorHandler, OPTLYEventDispatcher, OPTLYLogger, OPTLYUserProfileService;
+@class OPTLYClient, OPTLYManagerBuilder;
+@protocol OPTLYDatafileManager, OPTLYErrorHandler, OPTLYEventDispatcher, OPTLYLogger, OPTLYUserProfile;
 
 typedef void (^OPTLYManagerBuilderBlock)(OPTLYManagerBuilder * _Nullable builder);
 
@@ -45,12 +37,8 @@ typedef void (^OPTLYManagerBuilderBlock)(OPTLYManagerBuilder * _Nullable builder
     NSString *_clientVersion;
 }
 
-/// The ID of the Optimizely Project the manager will oversee
-@property (nonatomic, readwrite, strong, nullable) NSString *projectId;
-/// The ID of the Optimizely Project SDK key the manager will oversee
-@property (nonatomic, readwrite, strong, nullable) NSString *sdkKey;
-// The wrapper for project id and sdk key
-@property (nonatomic, readwrite, strong, nullable) OPTLYDatafileConfig* datafileConfig;
+/// The ID of the Optimizely project to manager
+@property (nonatomic, readwrite, strong, nonnull) NSString *projectId;
 /// The default datafile to initialize an Optimizely Client with
 @property (nonatomic, readwrite, strong, nullable) NSData *datafile;
 /// The datafile manager that will download the datafile for the manager
@@ -62,63 +50,33 @@ typedef void (^OPTLYManagerBuilderBlock)(OPTLYManagerBuilder * _Nullable builder
 /// The logger to be used for the manager, client, and all subcomponents
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYLogger> logger;
 /// User profile to be used by the client to store user-specific data.
-@property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfileService> userProfileService;
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
 /// The client engine
 @property (nonatomic, readonly, strong, nonnull) NSString *clientEngine;
-/// Version number of the Optimizely iOS SDK
+/// The client version
 @property (nonatomic, readonly, strong, nonnull) NSString *clientVersion;
-/// iOS Device Model
-@property (nonatomic, readonly, strong, nonnull) NSString *deviceModel;
-/// iOS OS Version
-@property (nonatomic, readonly, strong, nonnull) NSString *osVersion;
-/// iOS App Version
-@property (nonatomic, readonly, strong, nonnull) NSString *appVersion;
 
-
-/**
- * Synchronously initializes the client using the latest
- * cached datafile with a fallback of the bundled datafile
- * (i.e., the datafile provided in the OPTLYManagerBuilder
- * during the manager initialization).
- *
- * If the cached datafile fails to load, the bundled datafile
- * is used.
- *
+/*
+ * Synchronous call that would retrieve the datafile from local cache. If it fails to load from local cache it will return a dummy instance
  */
 - (nullable OPTLYClient *)initialize;
 
 /**
- * Asynchronously initializes the client using the latest
- * downloaded datafile with a fallback of the bundled datafile
- * (i.e., the datafile provided in the OPTLYManagerBuilder
- * during the manager initialization).
- *
- * In the case that there is an error in the datafile download,
- *  the latest cached datafile (if one exists) is used.
- *
- * If there are no updates in the datafile, then the datafile is not
- *  downloaded and the latest cached datafile is used.
- *
- * If the cached datafile fails to load, the bundled datafile
- *  is used.
- *
- * @param callback The block called following the initialization
- *   of the client.
- */
-- (void)initializeWithCallback:(void(^ _Nullable)(NSError * _Nullable error,
-                                      OPTLYClient * _Nullable client))callback;
-
-/**
- * Synchronously instantiates the client from the provided datafile
- * with no fallbacks. If the datafile is invalid, then a dummy client instance
- * will be returned (i.e., all method calls on the client will be NoOps).
- *
- * @param datafile The datafile used to instantiate the client.
+ * Synchronous call that would instantiate the client from the datafile given
+ * If the datafile is bad, then the client will try to get the datafile from local cache (if it exists). If it fails to load from local cache it will return a dummy instance
  */
 - (nullable OPTLYClient *)initializeWithDatafile:(nonnull NSData *)datafile;
+
+
+/**
+ * Asynchronously gets the client from a datafile downloaded from the CDN.
+ * If the client could not be initialized, the error will be set in the callback.
+ */
+- (void)initializeWithCallback:(void(^ _Nullable)(NSError * _Nullable error, OPTLYClient * _Nullable client))callback;
 
 /*
  * Gets the cached Optimizely client.
  */
 - (nullable OPTLYClient *)getOptimizely;
+
 @end

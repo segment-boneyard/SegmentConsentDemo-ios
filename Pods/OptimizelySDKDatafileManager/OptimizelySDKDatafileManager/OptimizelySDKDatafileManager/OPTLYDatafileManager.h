@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -17,14 +17,10 @@
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
     #import "OPTLYDatafileManager.h"
-    #import "OPTLYDatafileConfig.h"
 #else
     #import <OptimizelySDKShared/OPTLYDatafileManagerBasic.h>
-    #import <OptimizelySDKShared/OPTLYDatafileConfig.h>
 #endif
-
 #import "OPTLYDatafileManagerBuilder.h"
-
 
 @protocol OPTLYDatafileManager, OPTLYErrorHandler, OPTLYLogger;
 
@@ -32,8 +28,10 @@
 
 /// The time interval to regularly fetch the datafile.
 @property (nonatomic, readonly) NSTimeInterval datafileFetchInterval;
+/// This flag specifies if the datafile has been cached or not.
+@property (nonatomic, assign) BOOL isDatafileCached;
 /// The project ID of the datafile this datafile manager will monitor
-@property (nonatomic, readonly, strong, nonnull) OPTLYDatafileConfig *datafileConfig;
+@property (nonatomic, readonly, strong, nonnull) NSString *projectId;
 /// The error handler to be used for the manager, client, and all subcomponents
 @property (nonatomic, readonly, strong, nullable) id<OPTLYErrorHandler> errorHandler;
 /// A logger for the OPTLYDatafileManager to log messages.
@@ -44,14 +42,6 @@
  * @param builderBlock The builder block containing the datafile fetch interval.
  * @return an Optimizely Datafile Manager instance.
  */
-+ (nullable instancetype)init:(nullable OPTLYDatafileManagerBuilderBlock)builderBlock
-__attribute((deprecated("Use OPTLYDatafileManagerDefault initWithBuilder method instead.")));
-
-/**
- * Init with OPTLYDatafileManagerBuilder object
- * @param builder The OPTLYDatafileManagerBuilder object containing the datafile fetch interval.
- * @return an Optimizely Datafile Manager instance.
- */
-- (nullable instancetype)initWithBuilder:(nullable OPTLYDatafileManagerBuilder *)builder;
++ (nullable instancetype)init:(nonnull OPTLYDatafileManagerBuilderBlock)builderBlock;
 
 @end

@@ -21,15 +21,13 @@ extern NSInteger const OPTLYDataStorePercentageOfEventsToRemoveUponOverflow;
 
 @protocol OPTLYLogger;
 
-// If adding event type, update: stringForDataTypeEnum
+// If adding event type, update: removeAllUserData
 typedef NS_ENUM(NSUInteger, OPTLYDataStoreDataType)
 {
     OPTLYDataStoreDataTypeDatabase,
     OPTLYDataStoreDataTypeDatafile,
     OPTLYDataStoreDataTypeEventDispatcher,
     OPTLYDataStoreDataTypeUserProfile,
-    OPTLYDataStoreDataTypeUserProfileService,
-    OPTLYDataStoreDataTypeCOUNT
 };
 
 // If adding data store data type, update: removeSavedEvents, totalNumberOfEvents
@@ -68,7 +66,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  * Wipes all Optimizely data
  *
  **/
-- (BOOL)removeAll:(NSError * _Nullable __autoreleasing * _Nullable)error;
+- (BOOL)removeAll:(NSError * _Nullable * _Nullable)error;
 
 // -------- File Storage --------
 // Persists data in a file format using NSFileManager.
@@ -90,7 +88,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
 - (BOOL)saveFile:(nonnull NSString *)fileName
             data:(nonnull NSData *)data
             type:(OPTLYDataStoreDataType)dataType
-           error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+           error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Gets a file.
@@ -104,7 +102,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  **/
 - (nullable NSData *)getFile:(nonnull NSString *)fileName
                         type:(OPTLYDataStoreDataType)dataType
-                       error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                       error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Determines if a file exists.
@@ -137,7 +135,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  **/
 - (BOOL)removeFile:(nonnull NSString *)fileName
               type:(OPTLYDataStoreDataType)dataType
-             error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+             error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Removes all document files.
@@ -145,7 +143,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  * @param error An error object which will store any errors if the file removal fails.
  *
  **/
-- (BOOL)removeAllFiles:(NSError * _Nullable __autoreleasing * _Nullable)error;
+- (BOOL)removeAllFiles:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Removes a particular data type.
@@ -155,7 +153,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  *
  **/
 - (BOOL)removeFilesForDataType:(OPTLYDataStoreDataType)dataType
-                         error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                         error:(NSError * _Nullable * _Nullable)error;
 
 
 // -------- Events Storage --------
@@ -174,7 +172,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  */
 - (BOOL)saveEvent:(nonnull NSDictionary *)data
         eventType:(OPTLYDataStoreEventType)eventType
-            error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+            error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Gets the oldest event.
@@ -183,7 +181,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  * @param error An error object is returned if an error occurs.
  */
 - (nullable NSDictionary *)getOldestEvent:(OPTLYDataStoreEventType)eventType
-                                    error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                                    error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Gets the first N entries (i.e., the N oldest events).
@@ -194,16 +192,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  */
 - (nullable NSArray *)getFirstNEvents:(NSInteger)numberOfEvents
                             eventType:(OPTLYDataStoreEventType)eventType
-                                error:(NSError * _Nullable __autoreleasing * _Nullable)error;
-
-/**
- * Gets the last entry id.
- *
- * @param eventType The event type of the data that needs to be removed.
- * @param error An error object is returned if an error occurs.
- */
-- (NSInteger)getLastEventId:(OPTLYDataStoreEventType)eventType
-                      error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                                error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Gets all events.
@@ -213,7 +202,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  * @return The return value is an array of OPTLYDatabaseEntity.
  */
 - (nullable NSArray *)getAllEvents:(OPTLYDataStoreEventType)eventType
-                             error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                             error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Deletes the oldest event.
@@ -222,7 +211,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  * @param error An error object is returned if an error occurs.
  */
 - (BOOL)removeOldestEvent:(OPTLYDataStoreEventType)eventType
-                    error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                    error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Deletes the first N events (i.e., the N oldest events).
@@ -233,7 +222,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  */
 - (BOOL)removeFirstNEvents:(NSInteger)numberOfEvents
                  eventType:(OPTLYDataStoreEventType)eventType
-                     error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                     error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Removes an event
@@ -244,7 +233,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  */
 - (BOOL)removeEvent:(nonnull NSDictionary *)event
           eventType:(OPTLYDataStoreEventType)eventType
-              error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+              error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Deletes all events.
@@ -253,7 +242,7 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  * @param error An error object is returned if an error occurs.
  */
 - (BOOL)removeAllEvents:(OPTLYDataStoreEventType)eventType
-                  error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                  error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Returns the number of saved events.
@@ -263,14 +252,14 @@ typedef NS_ENUM(NSUInteger, OPTLYDataStoreEventType)
  * @return The number of events saved.
  */
 - (NSInteger)numberOfEvents:(OPTLYDataStoreEventType)eventType
-                      error:(NSError * _Nullable __autoreleasing * _Nullable)error;
+                      error:(NSError * _Nullable * _Nullable)error;
 
 /**
  * Removes all events.
  *
  * @param error An error object is returned if an error occurs.
  */
-- (BOOL)removeAllEvents:(NSError * _Nullable __autoreleasing * _Nullable)error;
+- (BOOL)removeAllEvents:(NSError * _Nullable * _Nullable)error;
 
 
 // -------- User Data Storage --------

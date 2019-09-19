@@ -18,9 +18,9 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 
 @class OPTLYEventDecisionTicket, OPTLYEventDecision;
@@ -28,32 +28,32 @@
 @protocol OPTLYEventLayerState
 @end
 
-@interface OPTLYEventLayerState : OPTLYJSONModel
+@interface OPTLYEventLayerState : JSONModel
 
 // The id of the layer state
 @property (nonatomic, strong, nonnull) NSString *layerId;
 // Visitor-specific input to Client Decision Engine
-@property (nonatomic, strong, nullable) OPTLYEventDecisionTicket<OPTLYOptional> *decisionTicket;
+@property (nonatomic, strong, nullable) OPTLYEventDecisionTicket<Optional> *decisionTicket;
 // Output of the Client Decision Engine
-@property (nonatomic, strong, nullable) OPTLYEventDecision<OPTLYOptional> *decision;
+@property (nonatomic, strong, nullable) OPTLYEventDecision<Optional> *decision;
 // The activationId when the decision was made
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *decisionActivationId;
+@property (nonatomic, strong, nullable) NSString<Optional> *decisionActivationId;
 // The sessionId when the decision was made
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *decisionSessionId;
+@property (nonatomic, strong, nullable) NSString<Optional> *decisionSessionId;
 // The timestamp when the decision was made
-@property (nonatomic, strong, nullable) NSNumber<OPTLYOptional> *decisionTimestamp;
+@property (nonatomic, strong, nullable) NSNumber<Optional> *decisionTimestamp;
 // The generated UID for the DecisionEventTicketAvro logged when this decision was made.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *decisionEventId;
+@property (nonatomic, strong, nullable) NSString<Optional> *decisionEventId;
 // Indicates whether any actions for this layer have trigged
 @property (nonatomic, assign) BOOL actionTriggered;
 // The activation ID when the action was last triggered
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *actionActivationId;
+@property (nonatomic, strong, nullable) NSString<Optional> *actionActivationId;
 // The session Id when the action was last triggered
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *actionSessionId;
+@property (nonatomic, strong, nullable) NSString<Optional> *actionSessionId;
 // The timestamp when the action was last triggered
-@property (nonatomic, strong, nullable) NSNumber<OPTLYOptional> *actionTimestamp;
+@property (nonatomic, strong, nullable) NSNumber<Optional> *actionTimestamp;
 // The DATA revision of the layer definition in use when this layer was processed
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *revision;
+@property (nonatomic, strong, nullable) NSString<Optional> *revision;
 
 
 @end

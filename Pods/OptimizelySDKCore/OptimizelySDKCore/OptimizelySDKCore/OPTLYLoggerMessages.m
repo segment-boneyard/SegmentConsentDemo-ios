@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2017-2019, Optimizely, Inc. and contributors                   *
+ * Copyright 2016-2017, Optimizely, Inc. and contributors                   *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -22,30 +22,6 @@ NSString *const OPTLYLoggerMessagesVariationUserAssigned = @"[OPTIMIZELY] User %
 // info
 NSString *const OPTLYLoggerMessagesActivationSuccess = @"[OPTIMIZELY] Activating user %@ in experiment %@.";
 NSString *const OPTLYLoggerMessagesConversionSuccess = @"[OPTIMIZELY] Tracking event %@ for user %@.";
-NSString *const OPTLYLoggerMessagesConversionFailure = @"[OPTIMIZELY] No valid experiment for event %@ to track.";
-// error
-NSString *const OPTLYLoggerMessagesUserIdInvalid = @"[OPTIMIZELY] User ID cannot be nil or an empty string.";
-NSString *const OPTLYLoggerMessagesActivateExperimentKeyEmpty = @"[OPTIMIZELY] Experiment Key cannot be nil or an empty string.";
-NSString *const OPTLYLoggerMessagesActivateExperimentKeyInvalid = @"[OPTIMIZELY] Experiment not found for Key %@.";
-NSString *const OPTLYLoggerMessagesTrackEventKeyEmpty = @"[OPTIMIZELY] Event Key cannot be nil or an empty string.";
-NSString *const OPTLYLoggerMessagesTrackEventKeyInvalid = @"[OPTIMIZELY] Event not found for Key %@.";
-NSString *const OPTLYLoggerMessagesTrackEventNoAssociation = @"[OPTIMIZELY] Event key %@ is not associated with any experiment.";
-NSString *const OPTLYLoggerMessagesTrackExperimentNoAssociation = @"[OPTIMIZELY] Experiment %@ is not associated with event %@.";
-NSString *const OPTLYLoggerMessagesTrackExperimentNotTracked = @"[OPTIMIZELY] Not tracking user %@ for experiment %@";
-NSString *const OPTLYLoggerMessagesFeatureDisabledUserIdInvalid = @"[OPTIMIZELY] User ID must not be empty for feature enabled.";
-NSString *const OPTLYLoggerMessagesFeatureDisabledFlagKeyInvalid = @"[OPTIMIZELY] Feature flag key must not be empty for feature enabled.";
-NSString *const OPTLYLoggerMessagesFeatureDisabled = @"[OPTIMIZELY] Feature flag %@ is not enabled for user %@.";
-NSString *const OPTLYLoggerMessagesFeatureEnabledNotExperimented = @"[OPTIMIZELY] The user %@ is not being experimented on feature %@.";
-NSString *const OPTLYLoggerMessagesFeatureEnabled = @"[OPTIMIZELY] Feature flag %@ is enabled for user %@.";
-NSString *const OPTLYLoggerMessagesFeatureVariableValueFlagKeyInvalid = @"[OPTIMIZELY] Feature flag key must not be empty for feature variable value.";
-NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableKeyInvalid = @"[OPTIMIZELY] Variable key must not be empty for feature variable value.";
-NSString *const OPTLYLoggerMessagesFeatureVariableValueUserIdInvalid = @"[OPTIMIZELY] User ID must not be empty for feature variable value.";
-NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableInvalid = @"[OPTIMIZELY] No feature variable was found for key %@ in feature flag %@.";
-NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableTypeInvalid = @"[OPTIMIZELY] Variable is of type %@, but you requested it as type %@.";
-NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableType = @"[OPTIMIZELY] Returning variable value %@ for variation %@ of feature flag %@";
-NSString *const OPTLYLoggerMessagesFeatureVariableValueNotUsed = @"[OPTIMIZELY] Variable %@ is not used in variation %@, returning default value %@.";
-NSString *const OPTLYLoggerMessagesFeatureVariableValueNotBucketed = @"[OPTIMIZELY] User %@ is not in any variation for feature flag %@, returning default value %@.";
-NSString *const OPTLYLoggerMessagesFeatureDisabledReturnDefault = @"[OPTIMIZELY] Feature %@ is not enabled for user %@, returning default value %@.";
 
 // ---- Bucketer ----
 // debug
@@ -87,7 +63,6 @@ NSString *const OPTLYLoggerMessagesDataStoreFileManagerSaveFile = @"[FILE MANAGE
 
 // ---- Datafile Manager ----
 // debug
-NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedInvalidStatusCode = @"[DATAFILE MANAGER] Datafile for project %@ NOT downloaded. Invalid status code %d.";
 NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError = @"[DATAFILE MANAGER] Datafile for project %@ NOT downloaded. Error received: %@.";
 NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedNoChanges = @"[DATAFILE MANAGER] Datafile for project %@ NOT downloaded. No datafile changes have been made.";
 NSString *const OPTLYLoggerMessagesDatafileManagerLastModifiedDateFound = @"[DATAFILE MANAGER] Last modified date %@ found for project %@.";
@@ -105,8 +80,8 @@ NSString *const OPTLYLoggerMessagesDatafileManagerInitializedWithoutProjectIdMes
 NSString *const OPTLYLoggerMessagesDatafileFetchIntervalInvalid = @"[DATAFILE MANAGER BUILDER] A datafile fetch interval of %f is invalid. Please set a datafile fetch interval >= 0."; // invalid datafile fetch interval value
 
 // ---- Datafile Versioning ----
-// info
-NSString *const OPTLYLoggerMessagesDatafileVersion = @"[PROJECT CONFIG] Datafile version is  %@."; // datafile version
+// warning
+NSString *const OPTLYLoggerMessagesInvalidDatafileVersion = @"[PROJECT CONFIG] Datafile version is invalid for this SDK version: expected %@ and received %@."; // datafile version
 
 // ---- Event Builder ----
 // debug
@@ -115,27 +90,19 @@ NSString *const OPTLYLoggerMessagesAttributeValueInvalidFormat = @"[EVENT BUILDE
 NSString *const OPTLYLoggerMessagesEventNotAssociatedWithExperiment = @"[EVENT BUILDER] Event key %@ is not associated with any experiment."; // event key
 NSString *const OPTLYLoggerMessagesExperimentNotPartOfEvent = @"[EVENT BUILDER] Experiment %@ is not associated with event %@.";
 // warning
+NSString *const OPTLYLoggerMessagesBucketerInvalid = @"[EVENT BUILDER] Bucketer is not valid.";
 NSString *const OPTLYLoggerMessagesEventKeyInvalid = @"[EVENT BUILDER] Event key cannot be an empty string.";
-NSString *const OPTLYLoggerMessagesNoExperiment = @"[EVENT BUILDER] Not building decision event ticket for no experiment.";
+NSString *const OPTLYLoggerMessagesExperimentKeyInvalid = @"[EVENT BUILDER] Experiment key cannot be an empty string.";
+NSString *const OPTLYLoggerMessagesNotBuildingDecisionEventTicket = @"[EVENT BUILDER] Not building decision event ticket for experiment key %@.";
+NSString *const OPTLYLoggerMessagesUserIdInvalid = @"[EVENT BUILDER] User ID cannot be an empty string.";
 NSString *const OPTLYLoggerMessagesVariationIdInvalid = @"[EVENT BUILDER] Variation ID cannot be an empty string.";
 NSString *const OPTLYLoggerMessagesEventNotPassAudienceEvaluation = @"[EVENT BUILDER] None of the experiments of %@ pass audience evaluation.";
-NSString *const OPTLYLoggerMessagesRevenueValueFloat = @"[EVENT BUILDER] Provided float revenue value %@ will be cast to integer %@.";
-NSString *const OPTLYLoggerMessagesRevenueValueString = @"[EVENT BUILDER] Provided string revenue value will be cast to integer %@.";
-NSString *const OPTLYLoggerMessagesRevenueValueIntegerOverflow = @"[EVENT BUILDER] Provided unsigned long long revenue value %@ overflows long long type and will not be sent to results.";
-NSString *const OPTLYLoggerMessagesRevenueValueFloatOverflow = @"[EVENT BUILDER] Provided float revenue value %@ overflows long long type and will not be sent to results.";
-NSString *const OPTLYLoggerMessagesRevenueValueInvalidBoolean = @"[EVENT BUILDER] Provided revenue value %@ is an invalid boolean type and will not be sent to results.";
-NSString *const OPTLYLoggerMessagesRevenueValueInvalid = @"[EVENT BUILDER] Provided revenue value is in an invalid format and will not be sent to results.";
-NSString *const OPTLYLoggerMessagesNumericValueString = @"[EVENT BUILDER] Provided string numeric value will be cast to float %@.";
-NSString *const OPTLYLoggerMessagesNumericValueInvalidBoolean = @"[EVENT BUILDER] Provided numeric value %@ is an invalid boolean type and will not be sent to results.";
-NSString *const OPTLYLoggerMessagesNumericValueInvalidFloat = @"[EVENT BUILDER] Provided numeric value %@ is an invalid float type and will not be sent to results.";
-NSString *const OPTLYLoggerMessagesNumericValueInvalidString = @"[EVENT BUILDER] Provided numeric value is a string %@ that could not be cast to a valid float.";
-NSString *const OPTLYLoggerMessagesNumericValueInvalid = @"[EVENT BUILDER] Provided numeric value is in an invalid format and will not be sent to results.";
-NSString *const OPTLYLoggerMessagesEventTagValueInvalid = @"[EVENT BUILDER] Provided event tag %@ is neither an integer nor a string and will not be sent to results.";
+NSString *const OPTLYLoggerMessagesRevenueValueInvalid = @"[EVENT BUILDER] Provided revenue value is not an integer.";
+NSString *const OPTLYLoggerMessagesEventTagValueInvalid = @"[EVENT BUILDER] Provided event tag %@ is neither an integer nor a string; skipping.";
+
 
 // ---- Event Dispatcher ----
 // info
-NSString *const OPTLYLoggerMessagesEventDispatcherActivationFailure = @"[EVENT DISPATCHER] Not activating user %@ for experiment %@.";
-NSString *const OPTLYLoggerMessagesEventDispatcherEventNotTracked = @"[EVENT DISPATCHER] Not tracking event %@ for user %@."; // event key, userId
 NSString *const OPTLYLoggerMessagesEventDispatcherAttemptingToSendConversionEvent = @"[EVENT DISPATCHER] Attempting to send conversion event %@ for user %@";
 NSString *const OPTLYLoggerMessagesEventDispatcherAttemptingToSendImpressionEvent = @"[EVENT DISPATCHER] Attempting to send impression event for user %@ in experiment %@";
 NSString *const OPTLYLoggerMessagesEventDispatcherTrackingSuccess = @"[EVENT DISPATCHER] Successfully tracked event %@ for user %@";
@@ -156,23 +123,26 @@ NSString *const OPTLYLoggerMessagesEventDispatcherDispatchFailed =  @"[EVENT DIS
 NSString *const OPTLYLoggerMessagesEventDispatcherPendingEvent = @"[EVENT DISPATCHER] Event already pending dispatch: %@";
 NSString *const OPTLYLoggerMessagesEventDispatcherEventSaved = @"[EVENT DISPATCHER] %@ saved: %@"; //event type, event
 NSString *const OPTLYLoggerMessagesEventDispatcherRemovedEvent = @"[EVENT DISPATCHER] %@ removed: %@ with error: %@"; //event type, event, error
+NSString *const OPTLYLoggerMessagesEventDispatcherEventNotTracked = @"[EVENT DISPATCHER] Not tracking event %@ for user %@."; // event key, userId
+NSString *const OPTLYLoggerMessagesEventDispatcherActivationFailure = @"[EVENT DISPATCHER] Not activating user %@ for experiment %@.";
 NSString *const OPTLYLoggerMessagesEventDispatcherInvalidEvent = @"[EVENT DISPATCHER] Invalid event.";
+
+// ---- Live Variables ----
+// info
+NSString *const OPTLYLoggerMessagesNoVariationFoundForExperimentWithLiveVariable = @"[LIVE VARIABLES] Variation not found for user ID: %@ with experiment key: %@ containing live variable: %@.";
+// warning
+NSString *const OPTLYLoggerMessagesNoExperimentsContainVariable = @"[LIVE VARIABLES] No experiment was found to contain variable key: %@.";
+NSString *const OPTLYLoggerMessagesVariableUnknownForVariableKey = @"[LIVE VARIABLES] Live variable not found for variable key: %@."; // live variable key
 
 // ---- Manager ----
 // error
-NSString *const OPTLYLoggerMessagesManagerBuilderBlockNotValid = @"[MANAGER] An Optimizely Manager Builder instance was not able to be initialized because the OPTLYManagerBuilderBlock was nil.";
 NSString *const OPTLYLoggerMessagesManagerBuilderNotValid = @"[MANAGER] An Optimizely Manager instance was not able to be initialized because the OPTLYManagerBuilder object was invalid.";
 NSString *const OPTLYLoggerMessagesManagerDatafileManagerDoesNotConformToOPTLYDatafileManagerProtocol = @"[MANAGER] Datafile manager does not conform to the OPTLYDatafileManager protocol.";
 NSString *const OPTLYLoggerMessagesManagerErrorHandlerDoesNotConformToOPTLYErrorHandlerProtocol = @"[MANAGER] Error handler does not conform to the OPTLYErrorHandler protocol.";
 NSString *const OPTLYLoggerMessagesManagerEventDispatcherDoesNotConformToOPTLYEventDispatcherProtocol = @"[MANAGER] Event dispatcher does not conform to the OPTLYEventDispatcher protocol.";
 NSString *const OPTLYLoggerMessagesManagerLoggerDoesNotConformToOPTLYLoggerProtocol = @"[MANAGER] Logger does not conform to the OPTLYLogger protocol.";
-NSString *const OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId = @"[MANAGER] An Optimizely Manager instance must be initialized with a project ID or SDK Key.";
+NSString *const OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId = @"[MANAGER] An Optimizely Manager instance must be initialized with a project ID.";
 NSString *const OPTLYLoggerMessagesManagerProjectIdCannotBeEmptyString = @"[MANAGER] The project ID for the Optimizely Manager instance cannot be an empty string";
-NSString *const OPTLYLoggerMessagesManagerInit = @"[MANAGER] Initializing client for projectId %@ with SDK Key %@.";
-NSString *const OPTLYLoggerMessagesManagerInitWithCallback = @"[MANAGER] Initializing client with callback for projectId %@ with SDK Key %@.";
-NSString *const OPTLYLoggerMessagesManagerInitWithCallbackErrorDatafileDownload = @"[MANAGER] Error downloading datafile: %@.";
-NSString *const OPTLYLoggerMessagesManagerInitWithCallbackNoDatafileUpdates = @"[MANAGER] Not downloading new datafile — no updates have been made.";
-NSString *const OPTLYLoggerMessagesManagerBundledDataLoaded = @"[MANAGER] The bundled datafile was loaded.";
 
 // ---- Project Config Getters ----
 // warning
@@ -183,17 +153,7 @@ NSString *const OPTLYLoggerMessagesEventUnknownForEventKey = @"[PROJECT CONFIG] 
 NSString *const OPTLYLoggerMessagesExperimentIdUnknownForExperimentKey = @"[PROJECT CONFIG] Experiment ID not found for experiment key: %@. Experiment key is not in the datafile."; // experiment key
 NSString *const OPTLYLoggerMessagesExperimentUnknownForExperimentId = @"[PROJECT CONFIG] Experiment not found for experiment ID: %@. Experiment ID is not in the datafile."; // experiment id
 NSString *const OPTLYLoggerMessagesExperimentUnknownForExperimentKey = @"[PROJECT CONFIG] Experiment key not found for experiment: %@. Experiment key is not in the datafile.";  // experiment key
-NSString *const OPTLYLoggerMessagesFeatureFlagUnknownForFeatureFlagKey = @"[PROJECT CONFIG] Feature Flag key not found for feature flag: %@. Feature Flag key is not in the datafile.";  // feature flag key
-NSString *const OPTLYLoggerMessagesVariableUsageUnknownForVariableId = @"[PROJECT CONFIG] Rollout not found for rollout ID: %@. Rollout ID is not in the datafile."; // feature variable id
-NSString *const OPTLYLoggerMessagesRolloutUnknownForRolloutId = @"[PROJECT CONFIG] Rollout not found for rollout ID: %@. Rollout ID is not in the datafile."; // rollout id
 NSString *const OPTLYLoggerMessagesGroupUnknownForGroupId = @"[PROJECT CONFIG] Group not found for group ID: %@. Group ID is not in the datafile."; // group id
-NSString *const OPTLYLoggerMessagesGetVariationNilVariation = @"[PROJECT CONFIG] Get variation returned a nil variation for user %@, experiment %@";
-NSString *const OPTLYLoggerMessagesVariationKeyUnknownForExperimentKey = @"[PROJECT CONFIG] Variation key %@ not found for experiment key %@.";
-NSString *const OPTLYLoggerMessagesProjectConfigUserIdInvalid = @"[PROJECT CONFIG] User ID cannot be nil.";
-NSString *const OPTLYLoggerMessagesProjectConfigExperimentKeyInvalid = @"[PROJECT CONFIG] Experiment Key cannot be nil or an empty string.";
-NSString *const OPTLYLoggerMessagesProjectConfigVariationKeyInvalid = @"[PROJECT CONFIG] Variation key cannot be an empty string.";
-NSString *const OPTLYLoggerMessagesAttributeIsReserved = @"[PROJECT CONFIG] Attribute %@ unexpectedly has reserved prefix %@; using attribute ID instead of reserved attribute name.";
-NSString *const OPTLYLoggerMessagesAttributeNotFound = @"[PROJECT CONFIG] Attribute key %@ is not in datafile.";
 
 // ---- User Profile ----
 // debug
@@ -202,39 +162,16 @@ NSString *const OPTLYLoggerMessagesUserProfileAttemptToSaveVariation = @"[USER P
 NSString *const OPTLYLoggerMessagesUserProfileNoVariation = @"[USER PROFILE] Variation for user %@, experiment ID %@ not found."; // user ID, experiment ID
 NSString *const OPTLYLoggerMessagesUserProfileRemoveVariation = @"[USER PROFILE] Removed variation ID %@ for user %@, experiment ID %@."; // variation ID, user ID, experiment ID
 NSString *const OPTLYLoggerMessagesUserProfileRemoveVariationNotFound = @"[USER PROFILE] Not removing variation for user %@, experiment ID %@. Variation not found."; // user ID, experiment ID
-NSString *const OPTLYLoggerMessagesUserProfileServiceSaved = @"[USER PROFILE] Saved user profile service %@ for user %@.";
+NSString *const OPTLYLoggerMessagesUserProfileSavedVariation = @"[USER PROFILE] Saved experiment ID %@ with variation ID %@ for user %@.";
 NSString *const OPTLYLoggerMessagesUserProfileVariation = @"[USER PROFILE] Variation ID %@ for user %@, experiment ID %@ found."; // variation ID, user ID, experiment ID
-NSString *const OPTLYLoggerMessagesUserProfileNotExist = @"[USER PROFILE SERVICE] User profile for %@ does not exist.";
-
 // warning
 NSString *const OPTLYLoggerMessagesUserProfileUnableToSaveVariation = @"[USER PROFILE] Unable to save experiment ID %@ with variation ID %@ for user %@."; // experiment ID, variation ID, user ID
 NSString *const OPTLYLoggerMessagesUserProfileVariationNoLongerInDatafile = @"[USER PROFILE] Variation ID: %@ for experiment ID: %@ no longer found in datafile."; // variation ID, experiment ID
-NSString *const OPTLYLoggerMessagesUserProfileSaveInvalidUserId = @"[USER PROFILE SERVICE] Invalid userId. Unable to save the user profile.";
-NSString *const OPTLYLoggerMessagesUserProfileLookupInvalidFormat = @"[USER PROFILE SERVICE] Invalid format for user profile lookup: %@.";
-NSString *const OPTLYLoggerMessagesUserProfileSaveInvalidFormat = @"[USER PROFILE SERVICE] Invalid format for user profile save: %@.";
 
-// ---- Decision Service ----
+// ---- Validator ----
 // info
-NSString *const OPTLYLoggerMessagesDecisionServiceExperimentNotRunning = @"[DECISION SERVICE] Experiment %@ is not running.";
-NSString *const OPTLYLoggerMessagesDecisionServiceFailAudienceTargeting = @"[DECISION SERVICE] User %@ does not meet conditions to be in experiment %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceSavedVariationInvalid = @"[DECISION SERVICE] Saved variation %@ is invalid. The variation has been paused or archived.";
-NSString *const OPTLYLoggerMessagesDecisionServiceUserProfileNotExist = @"[DECISION SERVICE] User profile service does not exist.";
-NSString *const OPTLYLoggerMessagesDecisionServiceSavedVariationParseError = @"[DECISION SERVICE] User profile parse error: %@. Unable to save user bucket information for: %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceGetVariationParseError = @"[DECISION SERVICE] User profile parse error: %@. Unable to get user bucket information for: %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceReplaceBucketEntity = @"[DECISION SERVICE] Replacing user %@ experiment bucket map entity %@ with %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceSettingTheBucketingID = @"[DECISION SERVICE] Setting the bucketing ID to %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceFFNotUsed = @"[DECISION SERVICE] Feature flag %@ is not used in any experiments.";
-NSString *const OPTLYLoggerMessagesDecisionServiceFFUserBucketed = @"[DECISION SERVICE] User %@ is bucketed into experiment %@ of feature %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceFFUserNotBucketed = @"[DECISION SERVICE] User %@ is not bucketed into any of the experiments using the feature %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceFRNotUsed = @"[DECISION SERVICE] Feature flag %@ is not used in a rollout.";
-NSString *const OPTLYLoggerMessagesDecisionServiceFRUserBucketed = @"[DECISION SERVICE] User %@ is bucketed into rollout for feature flag %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceFRUserExcluded = @"[DECISION SERVICE] User %@ was excluded due to traffic allocation. Checking 'Everyone Else' rule now.";
-NSString *const OPTLYLoggerMessagesDecisionServiceFRUserNotBucketed = @"[DECISION SERVICE] User %@ is not bucketed into rollout for feature flag %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceUserBucketed = @"[DECISION SERVICE] User with bucketing ID %@ is in experiment %@ of group %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceUserNotBucketed = @"[DECISION SERVICE] User with bucketing ID %@ is not in any experiments of group %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceUserInVariation = @"[DECISION SERVICE] User %@ is in variation %@ of experiment %@.";
-NSString *const OPTLYLoggerMessagesDecisionServiceGroupIdNotFound = @"[PROJECT CONFIG] Group Id not found.";
-NSString *const OPTLYLoggerMessagesDecisionServiceGroupUnknownForGroupId = @"[PROJECT CONFIG] Group not found for group ID: %@.";
+NSString *const OPTLYLoggerMessagesExperimentNotRunning = @"[VALIDATOR] Experiment %@ is not running.";
+NSString *const OPTLYLoggerMessagesFailAudienceTargeting = @"[VALIDATOR] User %@ does not meet conditions to be in experiment %@.";
 
 // ---- HTTP Request Manager ----
 // Debug (not through logger handler)
@@ -242,23 +179,6 @@ NSString *const OPTLYHTTPRequestManagerGETWithParametersAttempt = @"[HTTP] GET w
 NSString *const OPTLYHTTPRequestManagerGETIfModifiedSince = @"[HTTP] GET if modified attempt: %lu";
 NSString *const OPTLYHTTPRequestManagerPOSTWithParameters = @"[HTTP] POST attempt: %lu";
 NSString *const OPTLYHTTPRequestManagerBackoffRetryStates = @"[HTTP] Retry attempt: %d exponentialMultiplier: %u delay_ns: %lu, delayTime: %lu";
-
-// ---- Audience Evaluator ----
-// info
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorEvaluationCompletedWithResult = @"[AUDIENCE EVALUATOR] Audience %@ evaluated to: %@.";
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorExperimentEvaluationCompletedWithResult = @"[AUDIENCE EVALUATOR] Audiences for experiment %@ collectively evaluated to %@.";
-// warning
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorConditionEvaluatedAsUnknownForUnexpectedType = @"[AUDIENCE EVALUATOR] Audience condition %@ evaluated to UNKNOWN because a value of type %@ was passed for user attribute %@.";
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorUnknownMatchType = @"[AUDIENCE EVALUATOR] Audience condition %@ uses an unknown match type. You may need to upgrade to a newer release of the Optimizely SDK.";
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorUnknownConditionType = @"[AUDIENCE EVALUATOR] Audience condition %@ has an unknown condition type. You may need to upgrade to a newer release of the Optimizely SDK.";
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorUnsupportedValueType = @"[AUDIENCE EVALUATOR] Audience condition %@ has an unsupported condition value. You may need to upgrade to a newer release of the Optimizely SDK.";
-// debug
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorEvaluationStartedWithConditions = @"[AUDIENCE EVALUATOR] Starting to evaluate audience %@ with conditions: %@.";
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorEvaluationStartedForExperiment = @"[AUDIENCE EVALUATOR] Evaluating audiences for experiment %@: %@.";
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorConditionEvaluatedAsUnknownForMissingAttribute = @"[AUDIENCE EVALUATOR] Audience condition %@ evaluated to UNKNOWN because no value was passed for user attribute %@.";
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorConditionEvaluatedAsUnknownForUnexpectedTypeNull = @"[AUDIENCE EVALUATOR] Audience condition %@ evaluated to UNKNOWN because a null value was passed for user attribute %@.";
-NSString *const OPTLYLoggerMessagesAudienceEvaluatorConditionEvaluatedAsUnknownForUnexpectedTypeNanInfinity = @"[AUDIENCE EVALUATOR] Audience condition %@ evaluated to UNKNOWN because the number value for user attribute %@ is not in the range [-2^53, +2^53].";
-// error
 
 @implementation OPTLYLoggerMessages
 

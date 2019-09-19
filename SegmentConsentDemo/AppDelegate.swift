@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var consentManager = ConsentManager()
     var optlyManager: OptimizelySDKiOS.OPTLYManager?
-    var optlyClient: OptimizelySDKiOS.OPTLYClient?
+    var optlyClient: OPTLYClient?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // configure segment
@@ -26,16 +26,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configuration.trackApplicationLifecycleEvents = true
         configuration.recordScreenViews = true
         configuration.flushAt = 1
-        configuration.middlewares = [ConsentMiddleware()]
+        //configuration.middlewares = [ConsentMiddleware()]
         
         // setup optimizely
-        let optlyLogger = OPTLYLoggerDefault(logLevel: .error)
-        let builder = OPTLYManagerBuilder.init { (builder) in
+        /*let optlyLogger = OPTLYLoggerDefault(logLevel: .error)
+        let builder = OptimizelySDKiOS.OPTLYManagerBuilder { (builder) in
             builder?.projectId = "8135581546"
             builder?.logger = optlyLogger
         }
-        optlyManager = OptimizelySDKiOS.OPTLYManager(builder: builder)
-        optlyClient = optlyManager?.initialize()
+        optlyManager = OPTLYManager.init(builder: builder!)
+        
+        let b = OPTLYClientBuilder.init { (builder) in
+            
+        }
+        optlyClient = OPTLYClient.init(builder: b)*/
+        optlyManager = OptimizelyBounce().setupOptimizely()
         configuration.use(SEGOptimizelyXIntegrationFactory.instance(withOptimizely: optlyManager))
 
         SEGAnalytics.setup(with: configuration)

@@ -18,21 +18,21 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
 
 @protocol OPTLYEventHeader
 @end
 
-@interface OPTLYEventHeader : OPTLYJSONModel
+@interface OPTLYEventHeader : JSONModel
 
 // The IP address of the client
 @property (nonatomic, strong, nonnull) NSString *clientIp;
 // The user agent of the client. Null on mobile.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *userAgent;
+@property (nonatomic, strong, nullable) NSString<Optional> *userAgent;
 // The referrer of the client. Null on mobile.
-@property (nonatomic, strong, nullable) NSString<OPTLYOptional> *referer;
+@property (nonatomic, strong, nullable) NSString<Optional> *referer;
 
 @end

@@ -16,10 +16,10 @@
 
 #import <UIKit/UIKit.h>
 #ifdef UNIVERSAL
-    #import "OPTLYFMDB.h"
+    #import "FMDB.h"
     #import "OptimizelySDKCore.h"
 #else
-    #import <OptimizelySDKShared/OPTLYFMDB.h>
+    #import <FMDB/FMDB.h>
     #import <OptimizelySDKCore/OptimizelySDKCore.h>
 #endif
 #import "OPTLYDatabase.h"
@@ -34,7 +34,6 @@ static NSString * const kInsertEntityQuery = @"INSERT INTO %@ (json,timestamp) V
 static NSString * const kDeleteEntityIDQuery = @"DELETE FROM %@ where id IN %@";
 static NSString * const kDeleteEntityQuery = @"DELETE FROM %@ where json='%@'";
 static NSString * const kRetrieveEntityQuery = @"SELECT * from %@";
-static NSString * const kRetrieveLastEntityIdQuery = @"select last_insert_rowid()";
 static NSString * const kRetrieveEntityQueryLimit = @" LIMIT %ld";
 static NSString * const kEntitiesCountQuery = @"SELECT count(*) FROM %@";
 
@@ -46,7 +45,7 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
 @interface OPTLYDatabase()
 @property (nonatomic, strong) NSString *databaseFileDirectory;
 @property (nonatomic, strong) NSString *databaseFilePath;
-@property (nonatomic, strong) OPTLYFMDBDatabaseQueue *fmDatabaseQueue;
+@property (nonatomic, strong) FMDatabaseQueue *fmDatabaseQueue;
 @property (nonatomic, strong) NSString *baseDir;
 @end
 
@@ -69,7 +68,7 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
         
         // set the database queue
         _databaseFilePath =  [_baseDir stringByAppendingPathComponent:kDatabaseFileName];
-        _fmDatabaseQueue =  [OPTLYFMDBDatabaseQueue databaseQueueWithPath:_databaseFilePath];
+        _fmDatabaseQueue =  [FMDatabaseQueue databaseQueueWithPath:_databaseFilePath];
     }
     return self;
 }
@@ -82,10 +81,10 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
 }
 
 - (BOOL)createTable:(NSString *)tableName
-              error:(NSError * __autoreleasing *)error
+              error:(NSError **)error
 {
     __block BOOL ok = YES;
-    [self.fmDatabaseQueue inDatabase:^(OPTLYFMDBDatabase *db) {
+    [self.fmDatabaseQueue inDatabase:^(FMDatabase *db) {
         NSString *query = [NSString stringWithFormat:kCreateTableQuery, tableName];
         if (![db executeUpdate:query]) {
             ok = NO;
@@ -102,7 +101,7 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
 
 - (BOOL)saveEvent:(NSDictionary *)data
             table:(NSString *)tableName
-            error:(NSError * __autoreleasing *)error
+            error:(NSError **)error
 {
     __block BOOL ok = YES;
     if ([data count] == 0) {
@@ -118,7 +117,7 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
         return ok;
     }
     
-    [self.fmDatabaseQueue inDatabase:^(OPTLYFMDBDatabase *db){
+    [self.fmDatabaseQueue inDatabase:^(FMDatabase *db){
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:error];
         NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         
@@ -139,17 +138,17 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
 
 - (BOOL)deleteEntity:(NSString *)entityId
                table:(NSString *)tableName
-               error:(NSError * __autoreleasing *)error
+               error:(NSError **)error
 {
     return [self deleteEntities:@[entityId] table:tableName error:error];
 }
 
 - (BOOL)deleteEntities:(NSArray *)entityIds
                  table:(NSString *)tableName
-                 error:(NSError * __autoreleasing *)error
+                 error:(NSError **)error
 {
     __block BOOL ok = YES;
-    [self.fmDatabaseQueue inDatabase:^(OPTLYFMDBDatabase *db){
+    [self.fmDatabaseQueue inDatabase:^(FMDatabase *db){
         NSString *commaSeperatedIds = [NSString stringWithFormat:@"(%@)", [entityIds componentsJoinedByString:@","]];
         NSString *query = [NSString stringWithFormat:kDeleteEntityIDQuery, tableName, commaSeperatedIds];
         if (![db executeUpdate:query]) {
@@ -168,10 +167,10 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
 
 - (BOOL)deleteEntityWithJSON:(nonnull NSString *)json
                        table:(nonnull NSString *)tableName
-                       error:(NSError * _Nullable __autoreleasing * _Nullable)error
+                       error:(NSError * _Nullable * _Nullable)error
 {
     __block BOOL ok = YES;
-    [self.fmDatabaseQueue inDatabase:^(OPTLYFMDBDatabase *db){
+    [self.fmDatabaseQueue inDatabase:^(FMDatabase *db){
         NSString *query = [NSString stringWithFormat:kDeleteEntityQuery, tableName, json];
         if (![db executeUpdate:query]) {
             ok = NO;
@@ -188,7 +187,7 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
 }
 
 - (NSArray *)retrieveAllEntries:(NSString *)tableName
-                          error:(NSError * __autoreleasing *)error
+                          error:(NSError **)error
 {
     NSArray *allEntries = [self retrieveFirstNEntries:0 table:tableName error:error];
     return allEntries;
@@ -196,16 +195,16 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
 
 - (NSArray *)retrieveFirstNEntries:(NSInteger)numberOfEntries
                              table:(NSString *)tableName
-                             error:(NSError * __autoreleasing *)error
+                             error:(NSError **)error
 {
     NSMutableArray *results = [NSMutableArray new];
     
-    [self.fmDatabaseQueue inDatabase:^(OPTLYFMDBDatabase *db){
+    [self.fmDatabaseQueue inDatabase:^(FMDatabase *db){
         NSMutableString *query = [NSMutableString stringWithFormat:kRetrieveEntityQuery, tableName];
         if (numberOfEntries) {
             [query appendFormat:kRetrieveEntityQueryLimit, (long)numberOfEntries];
         }
-        OPTLYFMDBResultSet *resultSet = [db executeQuery:query];
+        FMResultSet *resultSet = [db executeQuery:query];
         if (!resultSet) {
             if (error) {
                 *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
@@ -229,41 +228,14 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
     return results;
 }
 
-- (NSInteger)retrieveLastEntryId:(NSString *)tableName
-                           error:(NSError * __autoreleasing *)error
-{
-    __block NSInteger rowId;
-    [self.fmDatabaseQueue inDatabase:^(OPTLYFMDBDatabase *db){
-        NSMutableString *query = [NSMutableString stringWithFormat:kRetrieveLastEntityIdQuery];
-        
-        OPTLYFMDBResultSet *resultSet = [db executeQuery:query];
-        if (!resultSet) {
-            if (error) {
-                *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                             code:OPTLYErrorTypesDatabase
-                                         userInfo:@{NSLocalizedDescriptionKey :
-                                                        NSLocalizedString([db lastErrorMessage], nil)}];
-            }
-            OPTLYLogError(@"Unable to retrieve rows of Optimizely table: %@ %@", tableName, [db lastErrorMessage]);
-        }
-        
-        if ([resultSet next]) {
-            rowId = [resultSet intForColumnIndex:0];
-        }
-        [resultSet close];
-    }];
-    
-    return rowId;
-}
-
 - (NSInteger)numberOfRows:(NSString *)tableName
-                    error:(NSError * __autoreleasing *)error
+                    error:(NSError **)error
 {
     __block NSInteger rows = 0;
     
-    [self.fmDatabaseQueue inDatabase:^(OPTLYFMDBDatabase *db){
+    [self.fmDatabaseQueue inDatabase:^(FMDatabase *db){
         NSString *query = [NSString stringWithFormat:kEntitiesCountQuery, tableName];
-        OPTLYFMDBResultSet *resultSet = [db executeQuery:query];
+        FMResultSet *resultSet = [db executeQuery:query];
         if (!resultSet) {
             if (error) {
                 *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
@@ -283,7 +255,7 @@ static NSString * const kColumnKeyTimestamp = @"timestamp";
     return rows;
 }
 
-- (BOOL)deleteDatabase:(NSError * __autoreleasing *)error {
+- (BOOL)deleteDatabase:(NSError **)error {
     NSFileManager *fm = [NSFileManager defaultManager];
     self.fmDatabaseQueue = nil;
     return [fm removeItemAtPath:self.databaseFilePath error:error];

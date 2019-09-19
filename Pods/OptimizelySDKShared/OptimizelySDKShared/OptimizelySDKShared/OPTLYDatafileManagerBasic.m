@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -30,9 +30,13 @@
     // runtime check
     BOOL implementsDownloadDatafileMethod = [instanceClass instancesRespondToSelector:@selector(downloadDatafile:completionHandler:)];
     BOOL implementsSaveDatafileMethod = [instanceClass instancesRespondToSelector:@selector(saveDatafile:)];
-    BOOL implementsGetDatafileMethod = [instanceClass instancesRespondToSelector:@selector(getSavedDatafile:)];
+    BOOL implementsGetDatafileMethod = [instanceClass instancesRespondToSelector:@selector(getSavedDatafile)];
     
     return validProtocolDeclaration && implementsDownloadDatafileMethod && implementsSaveDatafileMethod && implementsGetDatafileMethod;
+}
+
++ (NSURL *)projectConfigURLPath:(NSString *)projectId {
+    return [OPTLYNetworkService projectConfigURLPath:projectId];
 }
 
 @end
@@ -45,15 +49,13 @@
 
 @implementation OPTLYDatafileManagerBasic
 
-- (void)downloadDatafile:(nonnull OPTLYDatafileConfig *)datafileConfig
+- (void)downloadDatafile:(nonnull NSString *)projectId
        completionHandler:(nullable void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))completion {
     OPTLYNetworkService *networkService = [OPTLYNetworkService new];
-    [networkService downloadProjectConfig:[datafileConfig URLForKey]
+    [networkService downloadProjectConfig:projectId
                              backoffRetry:NO
                         completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                            if ([data length] > 0) {
-                                self.savedDatafile = data;
-                            }
+                            self.savedDatafile = data;
                             // call the completion handler
                             if (completion != nil) {
                                 completion(data, response, error);
@@ -61,17 +63,12 @@
                         }];
 }
 
-- (NSData * _Nullable)getSavedDatafile:(out NSError * _Nullable __autoreleasing * _Nullable)error NS_SWIFT_NOTHROW {
+- (NSData *)getSavedDatafile {
     return self.savedDatafile;
 }
 
 - (void)saveDatafile:(NSData *)datafile {
     self.savedDatafile = datafile;
-}
-
-- (BOOL)isDatafileCached {
-    BOOL isCached = self.savedDatafile != nil;
-    return isCached;
 }
 
 @end
@@ -85,16 +82,12 @@
     }
 }
 
-- (NSData * _Nullable)getSavedDatafile:(out NSError * _Nullable __autoreleasing * _Nullable)error NS_SWIFT_NOTHROW{
+- (NSData *)getSavedDatafile {
     return nil;
 }
 
 - (void)saveDatafile:(NSData *)datafile {
     return;
-}
-
-- (BOOL)isDatafileCached {
-    return false;
 }
 
 @end

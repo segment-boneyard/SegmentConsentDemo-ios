@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2018, Optimizely, Inc. and contributors                   *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -29,22 +29,11 @@
 @interface OPTLYClient : NSObject <Optimizely>
 
 /// Reference to the Optimizely Core instance
-@property (nonatomic, strong, readonly, nullable) Optimizely<Optimizely> *optimizely;
+@property (nonatomic, strong, readonly, nullable) Optimizely *optimizely;
 /// The Optimizely Core's logger, or if no logger a default logger
 @property (nonatomic, strong, readonly, nonnull) id<OPTLYLogger> logger;
-/// Optimizely X Mobile Default Attributes
-@property (atomic, strong, readwrite, nullable) NSDictionary *defaultAttributes;
 
-+ (nonnull instancetype)init:(nonnull OPTLYClientBuilderBlock)builderBlock
-__attribute((deprecated("Use OPTLYClient initWithBuilder method instead.")));
++ (nonnull instancetype)init:(nonnull OPTLYClientBuilderBlock)builderBlock;
 
-/**
- * Init with OPTLYClientBuilder object
- * @param builder The OPTLYClientBuilder object which has datafile, event handler, event dispatcher, and other configurations to be set.
- * @return OPTLYClient instance
- */
-- (nonnull instancetype)initWithBuilder:(nullable OPTLYClientBuilder *)builder;
-
-- (OPTLYNotificationCenter *_Nullable)notificationCenter;
-
+- (instancetype)initWithBuilder:(OPTLYClientBuilder *)builder;
 @end

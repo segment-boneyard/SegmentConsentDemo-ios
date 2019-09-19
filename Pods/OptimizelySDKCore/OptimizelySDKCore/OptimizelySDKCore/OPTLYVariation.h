@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2017-2018, Optimizely, Inc. and contributors                        *
+ * Copyright 2016, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -16,30 +16,26 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+    #import "JSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+    #import <JSONModel/JSONModelLib.h>
 #endif
-
-@class OPTLYVariableUsage;
-@protocol OPTLYVariableUsage;
-@protocol OPTLYVariation;
 
 /**
  * This class is a representation of an Optimizely variation.
  */
-@interface OPTLYVariation : OPTLYJSONModel
+@protocol OPTLYVariationVariable;
+@protocol OPTLYVariation
+@end
+
+@interface OPTLYVariation : JSONModel
 
 /// The variation's ID.
-@property (nonatomic, strong, nonnull) NSString *variationId;
+@property (nonatomic, strong) NSString *variationId;
 /// The variation's Key.
-@property (nonatomic, strong, nonnull) NSString *variationKey;
-/// The array containing the variables usage instances that are part of this variation.
-@property (nonatomic, strong, nullable) NSArray<OPTLYVariableUsage *><OPTLYVariableUsage, OPTLYOptional> *variableUsageInstances;
-/// Flag for Feature Toggle Ability
-@property (nonatomic, assign) BOOL featureEnabled;
-
-/// Gets the variable usage instance for a given variable id
-- (nullable OPTLYVariableUsage *)getVariableUsageForVariableId:(nullable NSString *)variableId;
+@property (nonatomic, strong) NSString *variationKey;
+/// The array containing the variation's live variable information -- variable ID and variable value.
+/// TODO: Make variables required and add in NSDictionary * back into NSArray
+@property (nonatomic, strong) NSArray<OPTLYVariationVariable, Optional> *variables;
 
 @end

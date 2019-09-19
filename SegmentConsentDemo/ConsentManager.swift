@@ -8,7 +8,6 @@
 
 import Foundation
 import OTPublishersSDK
-import Analytics
 
 enum ConsentGroup: String {
     case strictlyNecessary = "C0001"

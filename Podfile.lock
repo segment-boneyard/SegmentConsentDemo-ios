@@ -42,7 +42,7 @@ PODS:
     - OptimizelySDKShared (= 1.1.9)
   - Segment-Optimizely-X (1.0.3-beta):
     - Analytics (~> 3.0)
-    - OptimizelySDKiOS (= 1.1.9)
+    - OptimizelySDKiOS (~> 1.1.9)
 
 DEPENDENCIES:
   - Analytics (from `./externals/analytics-ios`)
@@ -75,7 +75,7 @@ SPEC CHECKSUMS:
   OptimizelySDKiOS: 060e24ddacb77e0bb45548863602816c3654cfc9
   OptimizelySDKShared: 2c981d2d88cc79296a314293f770fa5032f8bff8
   OptimizelySDKUserProfile: 20027486f6549934c479fd4b704c5c1195c8355b
-  Segment-Optimizely-X: 367abc9188de76436abbed1ddbd75fc4231e5c0c
+  Segment-Optimizely-X: f900e278ada20ec079e288c5ca7c4af7296f3562
 
 PODFILE CHECKSUM: b4d6c8bdc85d5780a12ae4205da648c3293d6cfb
 

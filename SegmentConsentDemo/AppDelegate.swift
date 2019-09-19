@@ -26,21 +26,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configuration.trackApplicationLifecycleEvents = true
         configuration.recordScreenViews = true
         configuration.flushAt = 1
-        //configuration.middlewares = [ConsentMiddleware()]
+        configuration.middlewares = [ConsentMiddleware()]
         
-        // setup optimizely
-        /*let optlyLogger = OPTLYLoggerDefault(logLevel: .error)
-        let builder = OptimizelySDKiOS.OPTLYManagerBuilder { (builder) in
-            builder?.projectId = "8135581546"
+        let optlyLogger = OPTLYLoggerDefault(logLevel: .error)
+        optlyManager = OPTLYManager.instance(builderBlock: { (builder) in
+            builder?.projectId = "8724802167"
             builder?.logger = optlyLogger
-        }
-        optlyManager = OPTLYManager.init(builder: builder!)
+        })
         
-        let b = OPTLYClientBuilder.init { (builder) in
-            
-        }
-        optlyClient = OPTLYClient.init(builder: b)*/
-        optlyManager = OptimizelyBounce().setupOptimizely()
+        optlyManager?.initialize(callback: { (error, optlyClient) in
+            // optimizely is up now.
+            print("optimizely is up now.")
+        })
+        
         configuration.use(SEGOptimizelyXIntegrationFactory.instance(withOptimizely: optlyManager))
 
         SEGAnalytics.setup(with: configuration)

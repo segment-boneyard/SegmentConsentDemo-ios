@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,7 +14,8 @@
 		A3001331232FEED500DF20D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A300132F232FEED500DF20D5 /* LaunchScreen.storyboard */; };
 		A300133E232FF66D00DF20D5 /* OTPublishersSDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A300133B232FF3C700DF20D5 /* OTPublishersSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A3001342232FFE2300DF20D5 /* ConsentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3001341232FFE2300DF20D5 /* ConsentManager.swift */; };
-		A387D3C92331FC1C0030833D /* OptimizelyBounce.m in Sources */ = {isa = PBXBuildFile; fileRef = A387D3C82331FC1C0030833D /* OptimizelyBounce.m */; };
+		A32F598E2333FA8A00A2F797 /* Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A32F598D2333FA8A00A2F797 /* Analytics.framework */; };
+		A32F59902333FA8A00A2F797 /* Segment_Optimizely_X.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A32F598F2333FA8A00A2F797 /* Segment_Optimizely_X.framework */; };
 		A387D3DF2333DF750030833D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A387D3DE2333DF750030833D /* UIKit.framework */; };
 		A387D3E12333DF7D0030833D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A387D3E02333DF7D0030833D /* Foundation.framework */; };
 		A4D4FCD7F7D9D895EB5CE319 /* Pods_SegmentConsentDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDB70C7C56C50C5A3021C936 /* Pods_SegmentConsentDemo.framework */; };
@@ -45,9 +46,8 @@
 		A3001332232FEED500DF20D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A300133B232FF3C700DF20D5 /* OTPublishersSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OTPublishersSDK.framework; sourceTree = "<group>"; };
 		A3001341232FFE2300DF20D5 /* ConsentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentManager.swift; sourceTree = "<group>"; };
-		A387D3C62331FBA00030833D /* SegmentConsentDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SegmentConsentDemo-Bridging-Header.h"; sourceTree = "<group>"; };
-		A387D3C72331FBA00030833D /* OptimizelyBounce.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OptimizelyBounce.h; sourceTree = "<group>"; };
-		A387D3C82331FC1C0030833D /* OptimizelyBounce.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OptimizelyBounce.m; sourceTree = "<group>"; };
+		A32F598D2333FA8A00A2F797 /* Analytics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Analytics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A32F598F2333FA8A00A2F797 /* Segment_Optimizely_X.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Segment_Optimizely_X.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A387D3CA2333DF030030833D /* libAnalytics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAnalytics.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A387D3CC2333DF030030833D /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A387D3CE2333DF030030833D /* libJSONModel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libJSONModel.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +69,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A32F598E2333FA8A00A2F797 /* Analytics.framework in Frameworks */,
+				A32F59902333FA8A00A2F797 /* Segment_Optimizely_X.framework in Frameworks */,
 				A387D3E12333DF7D0030833D /* Foundation.framework in Frameworks */,
 				A387D3DF2333DF750030833D /* UIKit.framework in Frameworks */,
 				A4D4FCD7F7D9D895EB5CE319 /* Pods_SegmentConsentDemo.framework in Frameworks */,
@@ -101,15 +103,12 @@
 			children = (
 				A300133A232FF3C700DF20D5 /* Externals */,
 				A3001326232FEED400DF20D5 /* AppDelegate.swift */,
-				A387D3C72331FBA00030833D /* OptimizelyBounce.h */,
-				A387D3C82331FC1C0030833D /* OptimizelyBounce.m */,
 				A3001328232FEED400DF20D5 /* ViewController.swift */,
 				A3001341232FFE2300DF20D5 /* ConsentManager.swift */,
 				A300132A232FEED400DF20D5 /* Main.storyboard */,
 				A300132D232FEED500DF20D5 /* Assets.xcassets */,
 				A300132F232FEED500DF20D5 /* LaunchScreen.storyboard */,
 				A3001332232FEED500DF20D5 /* Info.plist */,
-				A387D3C62331FBA00030833D /* SegmentConsentDemo-Bridging-Header.h */,
 			);
 			path = SegmentConsentDemo;
 			sourceTree = "<group>";
@@ -125,6 +124,8 @@
 		C876B862E28EDB435F1DCA59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A32F598D2333FA8A00A2F797 /* Analytics.framework */,
+				A32F598F2333FA8A00A2F797 /* Segment_Optimizely_X.framework */,
 				A387D3E02333DF7D0030833D /* Foundation.framework */,
 				A387D3DE2333DF750030833D /* UIKit.framework */,
 				A387D3CA2333DF030030833D /* libAnalytics.a */,
@@ -272,7 +273,6 @@
 				A3001329232FEED400DF20D5 /* ViewController.swift in Sources */,
 				A3001327232FEED400DF20D5 /* AppDelegate.swift in Sources */,
 				A3001342232FFE2300DF20D5 /* ConsentManager.swift in Sources */,
-				A387D3C92331FC1C0030833D /* OptimizelyBounce.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +435,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.segment.SegmentConsentDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SegmentConsentDemo/SegmentConsentDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -452,7 +451,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Externals",
-					"$PODS_CONFIGURATION_BUILD_DIR/Analytics",
+					$PODS_CONFIGURATION_BUILD_DIR/Analytics,
 				);
 				INFOPLIST_FILE = SegmentConsentDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -461,7 +460,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.segment.SegmentConsentDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SegmentConsentDemo/SegmentConsentDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
